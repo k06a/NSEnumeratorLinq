@@ -63,7 +63,7 @@
     NSArray * arr4 = @[@1,@3,@5,@7];
     NSArray * arr5 = @[@2,@4,@8,@10];
     
-    id(^func)(id) = ^(id a){return @([a intValue]%2);};
+    id (^func)(id) = ^id(id a){return @([a intValue]%2);};
     STAssertEqualObjects(set0, [[[arr0 objectEnumerator] distinct:func] toSetForTest], @"Empty array");
     STAssertEqualObjects(set1, [[[arr1 objectEnumerator] distinct:func] toSetForTest], @"Array of size 1");
     STAssertEqualObjects(set3, [[[arr2 objectEnumerator] distinct:func] toSetForTest], @"Array of size 2");
@@ -109,7 +109,7 @@
     NSArray * ans4 = @[@3,@5,@7,@9];
     NSArray * ans5 = @[@3,@5,@7,@9,@11];
     
-    id(^transform)(id) = ^(id a){return @([a intValue]*2 + 1);};
+    id (^transform)(id) = ^id(id a){return @([a intValue]*2 + 1);};
     STAssertEqualObjects(ans0, [[[arr0 objectEnumerator] select:transform] allObjects], @"Empty array");
     STAssertEqualObjects(ans1, [[[arr1 objectEnumerator] select:transform] allObjects], @"Array of size 1");
     STAssertEqualObjects(ans2, [[[arr2 objectEnumerator] select:transform] allObjects], @"Array of size 2");
@@ -134,7 +134,7 @@
     NSArray * ans4 = @[@0,@2,@12,@36];
     NSArray * ans5 = @[@0,@2,@12,@36,@80];
     
-    id(^transform)(id,NSInteger) = ^(id a,NSInteger i){return @(i*i*[a intValue]);};
+    id (^transform)(id, NSInteger) = ^id(id a,NSInteger i){return @(i*i*[a intValue]);};
     STAssertEqualObjects(ans0, [[[arr0 objectEnumerator] select_i:transform] allObjects], @"Empty array");
     STAssertEqualObjects(ans1, [[[arr1 objectEnumerator] select_i:transform] allObjects], @"Array of size 1");
     STAssertEqualObjects(ans2, [[[arr2 objectEnumerator] select_i:transform] allObjects], @"Array of size 2");
@@ -251,6 +251,32 @@
     STAssertEqualObjects(ans3A, [[[arr3 objectEnumerator] unionAll:[arrA objectEnumerator]] allObjects], @"3+A");
     STAssertEqualObjects(ans3B, [[[arr3 objectEnumerator] unionAll:[arrB objectEnumerator]] allObjects], @"3+B");
     STAssertEqualObjects(ans3C, [[[arr3 objectEnumerator] unionAll:[arrC objectEnumerator]] allObjects], @"3+C");
+}
+
+- (void)testWhere
+{
+    NSArray * arr = @[@1,@2,@3,@4,@5,@6,@7,@8];
+    
+    NSArray * ans1 = @[@1,@3,@5,@7];
+    NSArray * ans2 = @[@3,@4,@5];
+    NSArray * ans3 = @[@2,@5,@8];
+    
+    STAssertEqualObjects(ans1, [[[arr objectEnumerator] where:^BOOL(id a) {return [a intValue]%2 == 1;}] allObjects], @"Odd values");
+    STAssertEqualObjects(ans2, [[[arr objectEnumerator] where:^BOOL(id a) {return [a intValue]>2 && [a intValue]<=5;}] allObjects], @"Values in range (2,5]");
+    STAssertEqualObjects(ans3, [[[arr objectEnumerator] where:^BOOL(id a) {return [a intValue]%3 == 2;}] allObjects], @"Values x%3==2");
+}
+
+- (void)testWhere_i
+{
+    NSArray * arr = @[@100,@200,@300,@400,@500,@600,@700,@800];
+    
+    NSArray * ans1 = @[@200,@400,@600,@800];
+    NSArray * ans2 = @[@400,@500,@600];
+    NSArray * ans3 = @[@300,@600];
+    
+    STAssertEqualObjects(ans1, [[[arr objectEnumerator] where_i:^BOOL(id a, NSInteger i) {return i%2 == 1;}] allObjects], @"Odd indexes");
+    STAssertEqualObjects(ans2, [[[arr objectEnumerator] where_i:^BOOL(id a, NSInteger i) {return i>2 && i<=5;}] allObjects], @"Indexes in range (2,5]");
+    STAssertEqualObjects(ans3, [[[arr objectEnumerator] where_i:^BOOL(id a, NSInteger i) {return i%3 == 2;}] allObjects], @"Values x%3==2");
 }
 
 @end
