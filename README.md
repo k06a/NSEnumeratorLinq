@@ -1,0 +1,4 @@
+NSEnumeratorLinq
+================
+
+NSEnumerator LINQ category
