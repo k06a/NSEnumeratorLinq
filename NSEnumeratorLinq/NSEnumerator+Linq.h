@@ -10,6 +10,7 @@
 
 @interface NSEnumerator (Linq)
 - (NSInteger)count;
+- (NSInteger)count:(BOOL (^)(id))predicate;
 - (NSEnumerator *)distinct:(id (^)(id))func;
 - (NSEnumerator *)distinct;
 - (NSEnumerator *)select:(id (^)(id))predicate;

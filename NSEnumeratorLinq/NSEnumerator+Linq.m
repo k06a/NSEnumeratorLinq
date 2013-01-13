@@ -40,7 +40,12 @@
     return count;
 }
 
-- (NSEnumerator *)distinct:(id(^)(id))func
+- (NSInteger)count:(BOOL (^)(id))predicate
+{
+    return [[self where:predicate] count];
+}
+
+- (NSEnumerator *)distinct:(id (^)(id))func
 {
     __block NSMutableSet * set = [NSMutableSet set];
     return [[NSEnumeratorWrapper alloc] initWithEnumarator:self andFunc:^id(NSEnumerator * enumerator) {
@@ -67,7 +72,7 @@
     }];
 }
 
-- (NSEnumerator *)select:(id(^)(id))func
+- (NSEnumerator *)select:(id (^)(id))func
 {
     return [[NSEnumeratorWrapper alloc] initWithEnumarator:self andFunc:^id(NSEnumerator * enumerator) {
         id result = [enumerator nextObject];
@@ -76,7 +81,7 @@
     }];
 }
 
-- (NSEnumerator *)select_i:(id(^)(id, NSInteger))func
+- (NSEnumerator *)select_i:(id (^)(id, NSInteger))func
 {
     __block NSInteger index = -1;
     return [[NSEnumeratorWrapper alloc] initWithEnumarator:self andFunc:^id(NSEnumerator * enumerator) {
@@ -106,7 +111,7 @@
     }];
 }
 
-- (NSEnumerator *)where:(BOOL(^)(id object))predicate
+- (NSEnumerator *)where:(BOOL (^)(id object))predicate
 {
     return [[NSEnumeratorWrapper alloc] initWithEnumarator:self andFunc:^id(NSEnumerator * enumerator) {
         id result = nil;
@@ -117,7 +122,7 @@
     }];
 }
 
-- (NSEnumerator *)where_i:(BOOL(^)(id, NSInteger))predicate
+- (NSEnumerator *)where_i:(BOOL (^)(id, NSInteger))predicate
 {
     __block NSInteger index = -1;
     return [[NSEnumeratorWrapper alloc] initWithEnumarator:self andFunc:^id(NSEnumerator * enumerator) {
