@@ -143,4 +143,64 @@
     STAssertEqualObjects(ans5, [[[arr5 objectEnumerator] select_i:transform] allObjects], @"Array of size 5");
 }
 
+- (void)testSkip
+{
+    NSArray * arr0 = @[];
+    NSArray * arr1 = @[@1];
+    NSArray * arr2 = @[@1,@2];
+    NSArray * arr3 = @[@1,@2,@3];
+    NSArray * arr4 = @[@1,@2,@3,@4];
+    NSArray * arr5 = @[@1,@2,@3,@4,@5];
+    
+    NSArray * ans00 = @[];
+    NSArray * ans11 = @[@1];
+    NSArray * ans12 = @[@1,@2];
+    NSArray * ans13 = @[@1,@2,@3];
+    NSArray * ans14 = @[@1,@2,@3,@4];
+    NSArray * ans15 = @[@1,@2,@3,@4,@5];
+    NSArray * ans22 = @[@2];
+    NSArray * ans23 = @[@2,@3];
+    NSArray * ans24 = @[@2,@3,@4];
+    NSArray * ans25 = @[@2,@3,@4,@5];
+    NSArray * ans33 = @[@3];
+    NSArray * ans34 = @[@3,@4];
+    NSArray * ans35 = @[@3,@4,@5];
+    NSArray * ans44 = @[@4];
+    NSArray * ans45 = @[@4,@5];
+    NSArray * ans55 = @[@5];
+
+    STAssertEqualObjects(ans00, [[[arr0 objectEnumerator] skip:0] allObjects], @"Empty array");
+    STAssertEqualObjects(ans00, [[[arr0 objectEnumerator] skip:1] allObjects], @"Empty array");
+
+    STAssertEqualObjects(ans11, [[[arr1 objectEnumerator] skip:0] allObjects], @"Array of size 1");
+    STAssertEqualObjects(ans00, [[[arr1 objectEnumerator] skip:1] allObjects], @"Array of size 1");
+    STAssertEqualObjects(ans00, [[[arr1 objectEnumerator] skip:2] allObjects], @"Array of size 1");
+
+    STAssertEqualObjects(ans12, [[[arr2 objectEnumerator] skip:0] allObjects], @"Array of size 2");
+    STAssertEqualObjects(ans22, [[[arr2 objectEnumerator] skip:1] allObjects], @"Array of size 2");
+    STAssertEqualObjects(ans00, [[[arr2 objectEnumerator] skip:2] allObjects], @"Array of size 2");
+    STAssertEqualObjects(ans00, [[[arr2 objectEnumerator] skip:3] allObjects], @"Array of size 2");
+
+    STAssertEqualObjects(ans13, [[[arr3 objectEnumerator] skip:0] allObjects], @"Array of size 3");
+    STAssertEqualObjects(ans23, [[[arr3 objectEnumerator] skip:1] allObjects], @"Array of size 3");
+    STAssertEqualObjects(ans33, [[[arr3 objectEnumerator] skip:2] allObjects], @"Array of size 3");
+    STAssertEqualObjects(ans00, [[[arr3 objectEnumerator] skip:3] allObjects], @"Array of size 3");
+    STAssertEqualObjects(ans00, [[[arr3 objectEnumerator] skip:4] allObjects], @"Array of size 3");
+    
+    STAssertEqualObjects(ans14, [[[arr4 objectEnumerator] skip:0] allObjects], @"Array of size 4");
+    STAssertEqualObjects(ans24, [[[arr4 objectEnumerator] skip:1] allObjects], @"Array of size 4");
+    STAssertEqualObjects(ans34, [[[arr4 objectEnumerator] skip:2] allObjects], @"Array of size 4");
+    STAssertEqualObjects(ans44, [[[arr4 objectEnumerator] skip:3] allObjects], @"Array of size 4");
+    STAssertEqualObjects(ans00, [[[arr4 objectEnumerator] skip:4] allObjects], @"Array of size 4");
+    STAssertEqualObjects(ans00, [[[arr4 objectEnumerator] skip:5] allObjects], @"Array of size 4");
+
+    STAssertEqualObjects(ans15, [[[arr5 objectEnumerator] skip:0] allObjects], @"Array of size 5");
+    STAssertEqualObjects(ans25, [[[arr5 objectEnumerator] skip:1] allObjects], @"Array of size 5");
+    STAssertEqualObjects(ans35, [[[arr5 objectEnumerator] skip:2] allObjects], @"Array of size 5");
+    STAssertEqualObjects(ans45, [[[arr5 objectEnumerator] skip:3] allObjects], @"Array of size 5");
+    STAssertEqualObjects(ans55, [[[arr5 objectEnumerator] skip:4] allObjects], @"Array of size 5");
+    STAssertEqualObjects(ans00, [[[arr5 objectEnumerator] skip:5] allObjects], @"Array of size 5");
+    STAssertEqualObjects(ans00, [[[arr5 objectEnumerator] skip:6] allObjects], @"Array of size 5");
+}
+
 @end
