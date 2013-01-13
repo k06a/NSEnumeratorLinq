@@ -12,3 +12,6 @@ NSArray * subarr = [[[[[arr objectEnumerator]                                // 
                     where:^(id a){return [a intValue]>2 && [a intValue]<12}] // 6,10
                     allObjects];
 ```
+
+Main objective is to implement all of these methods:
+http://msdn.microsoft.com/en-us/library/system.linq.enumerable_methods.aspx
