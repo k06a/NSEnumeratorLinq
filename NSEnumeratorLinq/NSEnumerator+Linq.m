@@ -99,8 +99,8 @@
 
 - (NSEnumerator *)unionAll:(NSEnumerator *)enumerator
 {
-    return [[NSEnumeratorWrapper alloc] initWithEnumarator:self andFunc:^id(NSEnumerator * enumerator) {
-        id result = [self nextObject];
+    return [[NSEnumeratorWrapper alloc] initWithEnumarator:self andFunc:^id(NSEnumerator * selfEnumerator) {
+        id result = [selfEnumerator nextObject];
         if (result) return result;
         return [enumerator nextObject];
     }];
