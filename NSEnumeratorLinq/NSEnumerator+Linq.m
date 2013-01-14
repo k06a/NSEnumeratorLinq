@@ -32,6 +32,15 @@
 
 @implementation NSEnumerator (Linq)
 
+- (NSEnumerator *)concat:(NSEnumerator *)enumerator
+{
+    return [[NSEnumeratorWrapper alloc] initWithEnumarator:self andFunc:^id(NSEnumerator * selfEnumerator) {
+        id result = [selfEnumerator nextObject];
+        if (result) return result;
+        return [enumerator nextObject];
+    }];
+}
+
 - (NSInteger)count
 {
     NSInteger count = 0;
@@ -98,15 +107,6 @@
     return [[NSEnumeratorWrapper alloc] initWithEnumarator:self andFunc:^id(NSEnumerator * enumerator) {
         for (; skipCount > 0; skipCount--)
             [enumerator nextObject];
-        return [enumerator nextObject];
-    }];
-}
-
-- (NSEnumerator *)unionAll:(NSEnumerator *)enumerator
-{
-    return [[NSEnumeratorWrapper alloc] initWithEnumarator:self andFunc:^id(NSEnumerator * selfEnumerator) {
-        id result = [selfEnumerator nextObject];
-        if (result) return result;
         return [enumerator nextObject];
     }];
 }

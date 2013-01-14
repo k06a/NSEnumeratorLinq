@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 
 @interface NSEnumerator (Linq)
+- (NSEnumerator *)concat:(NSEnumerator *)enumerator;
 - (NSInteger)count;
 - (NSInteger)count:(BOOL (^)(id))predicate;
 - (NSEnumerator *)distinct:(id (^)(id))func;
@@ -16,7 +17,6 @@
 - (NSEnumerator *)select:(id (^)(id))predicate;
 - (NSEnumerator *)select_i:(id (^)(id, NSInteger))predicate;
 - (NSEnumerator *)skip:(NSInteger)count;
-- (NSEnumerator *)unionAll:(NSEnumerator *)enumerator;
 - (NSEnumerator *)where:(BOOL (^)(id))predicate;
 - (NSEnumerator *)where_i:(BOOL (^)(id, NSInteger))predicate;
 @end

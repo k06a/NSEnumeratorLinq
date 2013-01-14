@@ -32,6 +32,56 @@
     [super tearDown];
 }
 
+- (void)testConcat
+{
+    NSArray * arr0 = @[];
+    NSArray * arr1 = @[@1];
+    NSArray * arr2 = @[@1,@2];
+    NSArray * arr3 = @[@1,@2,@3];
+    
+    NSArray * arrZ = @[];
+    NSArray * arrA = @[@100];
+    NSArray * arrB = @[@100,@200];
+    NSArray * arrC = @[@100,@200,@300];
+    
+    NSArray * ans0Z = @[];
+    NSArray * ans0A = @[@100];
+    NSArray * ans0B = @[@100,@200];
+    NSArray * ans0C = @[@100,@200,@300];
+    NSArray * ans1Z = @[@1];
+    NSArray * ans1A = @[@1,@100];
+    NSArray * ans1B = @[@1,@100,@200];
+    NSArray * ans1C = @[@1,@100,@200,@300];
+    NSArray * ans2Z = @[@1,@2];
+    NSArray * ans2A = @[@1,@2,@100];
+    NSArray * ans2B = @[@1,@2,@100,@200];
+    NSArray * ans2C = @[@1,@2,@100,@200,@300];
+    NSArray * ans3Z = @[@1,@2,@3];
+    NSArray * ans3A = @[@1,@2,@3,@100];
+    NSArray * ans3B = @[@1,@2,@3,@100,@200];
+    NSArray * ans3C = @[@1,@2,@3,@100,@200,@300];
+    
+    STAssertEqualObjects(ans0Z, [[[arr0 objectEnumerator] concat:[arrZ objectEnumerator]] allObjects], @"0+Z");
+    STAssertEqualObjects(ans0A, [[[arr0 objectEnumerator] concat:[arrA objectEnumerator]] allObjects], @"0+A");
+    STAssertEqualObjects(ans0B, [[[arr0 objectEnumerator] concat:[arrB objectEnumerator]] allObjects], @"0+B");
+    STAssertEqualObjects(ans0C, [[[arr0 objectEnumerator] concat:[arrC objectEnumerator]] allObjects], @"0+C");
+    
+    STAssertEqualObjects(ans1Z, [[[arr1 objectEnumerator] concat:[arrZ objectEnumerator]] allObjects], @"1+Z");
+    STAssertEqualObjects(ans1A, [[[arr1 objectEnumerator] concat:[arrA objectEnumerator]] allObjects], @"1+A");
+    STAssertEqualObjects(ans1B, [[[arr1 objectEnumerator] concat:[arrB objectEnumerator]] allObjects], @"1+B");
+    STAssertEqualObjects(ans1C, [[[arr1 objectEnumerator] concat:[arrC objectEnumerator]] allObjects], @"1+C");
+    
+    STAssertEqualObjects(ans2Z, [[[arr2 objectEnumerator] concat:[arrZ objectEnumerator]] allObjects], @"2+Z");
+    STAssertEqualObjects(ans2A, [[[arr2 objectEnumerator] concat:[arrA objectEnumerator]] allObjects], @"2+A");
+    STAssertEqualObjects(ans2B, [[[arr2 objectEnumerator] concat:[arrB objectEnumerator]] allObjects], @"2+B");
+    STAssertEqualObjects(ans2C, [[[arr2 objectEnumerator] concat:[arrC objectEnumerator]] allObjects], @"2+C");
+    
+    STAssertEqualObjects(ans3Z, [[[arr3 objectEnumerator] concat:[arrZ objectEnumerator]] allObjects], @"3+Z");
+    STAssertEqualObjects(ans3A, [[[arr3 objectEnumerator] concat:[arrA objectEnumerator]] allObjects], @"3+A");
+    STAssertEqualObjects(ans3B, [[[arr3 objectEnumerator] concat:[arrB objectEnumerator]] allObjects], @"3+B");
+    STAssertEqualObjects(ans3C, [[[arr3 objectEnumerator] concat:[arrC objectEnumerator]] allObjects], @"3+C");
+}
+
 - (void)testCount
 {
     NSArray * arr0 = @[];
@@ -201,56 +251,6 @@
     STAssertEqualObjects(ans55, [[[arr5 objectEnumerator] skip:4] allObjects], @"Array of size 5");
     STAssertEqualObjects(ans00, [[[arr5 objectEnumerator] skip:5] allObjects], @"Array of size 5");
     STAssertEqualObjects(ans00, [[[arr5 objectEnumerator] skip:6] allObjects], @"Array of size 5");
-}
-
-- (void)testUnion
-{
-    NSArray * arr0 = @[];
-    NSArray * arr1 = @[@1];
-    NSArray * arr2 = @[@1,@2];
-    NSArray * arr3 = @[@1,@2,@3];
-
-    NSArray * arrZ = @[];
-    NSArray * arrA = @[@100];
-    NSArray * arrB = @[@100,@200];
-    NSArray * arrC = @[@100,@200,@300];
-
-    NSArray * ans0Z = @[];
-    NSArray * ans0A = @[@100];
-    NSArray * ans0B = @[@100,@200];
-    NSArray * ans0C = @[@100,@200,@300];
-    NSArray * ans1Z = @[@1];
-    NSArray * ans1A = @[@1,@100];
-    NSArray * ans1B = @[@1,@100,@200];
-    NSArray * ans1C = @[@1,@100,@200,@300];
-    NSArray * ans2Z = @[@1,@2];
-    NSArray * ans2A = @[@1,@2,@100];
-    NSArray * ans2B = @[@1,@2,@100,@200];
-    NSArray * ans2C = @[@1,@2,@100,@200,@300];
-    NSArray * ans3Z = @[@1,@2,@3];
-    NSArray * ans3A = @[@1,@2,@3,@100];
-    NSArray * ans3B = @[@1,@2,@3,@100,@200];
-    NSArray * ans3C = @[@1,@2,@3,@100,@200,@300];
-    
-    STAssertEqualObjects(ans0Z, [[[arr0 objectEnumerator] unionAll:[arrZ objectEnumerator]] allObjects], @"0+Z");
-    STAssertEqualObjects(ans0A, [[[arr0 objectEnumerator] unionAll:[arrA objectEnumerator]] allObjects], @"0+A");
-    STAssertEqualObjects(ans0B, [[[arr0 objectEnumerator] unionAll:[arrB objectEnumerator]] allObjects], @"0+B");
-    STAssertEqualObjects(ans0C, [[[arr0 objectEnumerator] unionAll:[arrC objectEnumerator]] allObjects], @"0+C");
-    
-    STAssertEqualObjects(ans1Z, [[[arr1 objectEnumerator] unionAll:[arrZ objectEnumerator]] allObjects], @"1+Z");
-    STAssertEqualObjects(ans1A, [[[arr1 objectEnumerator] unionAll:[arrA objectEnumerator]] allObjects], @"1+A");
-    STAssertEqualObjects(ans1B, [[[arr1 objectEnumerator] unionAll:[arrB objectEnumerator]] allObjects], @"1+B");
-    STAssertEqualObjects(ans1C, [[[arr1 objectEnumerator] unionAll:[arrC objectEnumerator]] allObjects], @"1+C");
-    
-    STAssertEqualObjects(ans2Z, [[[arr2 objectEnumerator] unionAll:[arrZ objectEnumerator]] allObjects], @"2+Z");
-    STAssertEqualObjects(ans2A, [[[arr2 objectEnumerator] unionAll:[arrA objectEnumerator]] allObjects], @"2+A");
-    STAssertEqualObjects(ans2B, [[[arr2 objectEnumerator] unionAll:[arrB objectEnumerator]] allObjects], @"2+B");
-    STAssertEqualObjects(ans2C, [[[arr2 objectEnumerator] unionAll:[arrC objectEnumerator]] allObjects], @"2+C");
-    
-    STAssertEqualObjects(ans3Z, [[[arr3 objectEnumerator] unionAll:[arrZ objectEnumerator]] allObjects], @"3+Z");
-    STAssertEqualObjects(ans3A, [[[arr3 objectEnumerator] unionAll:[arrA objectEnumerator]] allObjects], @"3+A");
-    STAssertEqualObjects(ans3B, [[[arr3 objectEnumerator] unionAll:[arrB objectEnumerator]] allObjects], @"3+B");
-    STAssertEqualObjects(ans3C, [[[arr3 objectEnumerator] unionAll:[arrC objectEnumerator]] allObjects], @"3+C");
 }
 
 - (void)testWhere
