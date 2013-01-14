@@ -32,12 +32,34 @@
 
 @implementation NSEnumerator (Linq)
 
+- (BOOL)all
+{
+    return [self all:^BOOL(id object) {
+        return object != nil;
+    }];
+}
+
 - (BOOL)all:(BOOL (^)(id))predicate
 {
     for (id object in self)
         if (!predicate(object))
             return NO;
     return YES;
+}
+
+- (BOOL)any
+{
+    return [self any:^BOOL(id object) {
+        return object != nil;
+    }];
+}
+
+- (BOOL)any:(BOOL (^)(id))predicate
+{
+    for (id object in self)
+        if (predicate(object))
+            return YES;
+    return NO;
 }
 
 - (NSEnumerator *)concat:(NSEnumerator *)enumerator
@@ -80,6 +102,13 @@
         set = nil;
         return nil;
     }];
+}
+
+- (id)elementAt:(NSInteger)index
+{
+    for (int i = 0; i < index; i++)
+        [self nextObject];
+    return [self nextObject];
 }
 
 - (NSEnumerator *)distinct
