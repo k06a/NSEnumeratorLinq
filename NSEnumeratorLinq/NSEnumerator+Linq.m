@@ -32,11 +32,19 @@
 
 @implementation NSEnumerator (Linq)
 
+- (BOOL)all:(BOOL (^)(id))predicate
+{
+    for (id object in self)
+        if (!predicate(object))
+            return NO;
+    return YES;
+}
+
 - (NSEnumerator *)concat:(NSEnumerator *)enumerator
 {
     return [[NSEnumeratorWrapper alloc] initWithEnumarator:self andFunc:^id(NSEnumerator * selfEnumerator) {
-        id result = [selfEnumerator nextObject];
-        if (result) return result;
+        id object = [selfEnumerator nextObject];
+        if (object) return object;
         return [enumerator nextObject];
     }];
 }
@@ -44,7 +52,7 @@
 - (NSInteger)count
 {
     NSInteger count = 0;
-    while ([self nextObject])
+    for (id object in self)
         count++;
     return count;
 }
@@ -58,17 +66,17 @@
 {
     __block NSMutableSet * set = [NSMutableSet set];
     return [[NSEnumeratorWrapper alloc] initWithEnumarator:self andFunc:^id(NSEnumerator * enumerator) {
-        id result = nil;
+        id object = nil;
         do
         {
-            result = [enumerator nextObject];
-            id value = func(result);
-            if (result && ![set member:value])
+            object = [enumerator nextObject];
+            id value = func(object);
+            if (object && ![set member:value])
             {
                 [set addObject:value];
-                return result;
+                return object;
             }
-        } while (result);
+        } while (object);
         set = nil;
         return nil;
     }];
@@ -103,12 +111,9 @@
 
 - (NSEnumerator *)skip:(NSInteger)count
 {
-    __block NSInteger skipCount = count;
-    return [[NSEnumeratorWrapper alloc] initWithEnumarator:self andFunc:^id(NSEnumerator * enumerator) {
-        for (; skipCount > 0; skipCount--)
-            [enumerator nextObject];
-        return [enumerator nextObject];
-    }];
+    for (int i = 0; i < count; i++)
+        [self nextObject];
+    return self;
 }
 
 - (NSEnumerator *)where:(BOOL (^)(id object))predicate

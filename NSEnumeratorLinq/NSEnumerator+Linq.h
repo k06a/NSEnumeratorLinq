@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 
 @interface NSEnumerator (Linq)
+- (BOOL)all:(BOOL (^)(id))predicate;
 - (NSEnumerator *)concat:(NSEnumerator *)enumerator;
 - (NSInteger)count;
 - (NSInteger)count:(BOOL (^)(id))predicate;
