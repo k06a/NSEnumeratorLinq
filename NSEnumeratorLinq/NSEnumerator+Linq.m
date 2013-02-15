@@ -30,7 +30,116 @@
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
 
+@interface NSDictionary (KeyValueEnumerator)
+- (NSEnumerator *)keyValueEnumerator;
+@end
+@implementation NSDictionary (KeyValueEnumerator)
+- (NSEnumerator *)keyValueEnumerator
+{
+    NSEnumerator * keyEnumerator = [self keyEnumerator];
+    return [[NSEnumeratorWrapper alloc] initWithEnumarator:nil andFunc:^id(NSEnumerator * fakeEnumerator) {
+        id key = [keyEnumerator nextObject];
+        if (key == nil) return nil;
+        id value = [self objectForKey:key];
+        return [NSKeyValuePair pairWithKey:key value:value];
+    }];
+}
+@end
+
+////////////////////////////////////////////////////////////////////////////////////////////////
+
 @implementation NSEnumerator (Linq)
+
+- (NSEnumerator *)where:(BOOL (^)(id object))predicate
+{
+    return [[NSEnumeratorWrapper alloc] initWithEnumarator:self andFunc:^id(NSEnumerator * enumerator) {
+        id result;
+        while (result = [enumerator nextObject])
+            if (predicate(result))
+                return result;
+        return nil;
+    }];
+}
+
+- (NSEnumerator *)where_i:(BOOL (^)(id, NSInteger))predicate
+{
+    __block NSInteger index = 0;
+    return [[NSEnumeratorWrapper alloc] initWithEnumarator:self andFunc:^id(NSEnumerator * enumerator) {
+        id result;
+        while (result = [enumerator nextObject])
+            if (predicate(result,index++))
+                return result;
+        return nil;
+    }];
+}
+
+- (NSEnumerator *)select:(id (^)(id))func
+{
+    return [[NSEnumeratorWrapper alloc] initWithEnumarator:self andFunc:^id(NSEnumerator * enumerator) {
+        id result = [enumerator nextObject];
+        if (result)
+            return func(result);
+        return nil;
+    }];
+}
+
+- (NSEnumerator *)select_i:(id (^)(id, NSInteger))func
+{
+    __block NSInteger index = 0;
+    return [[NSEnumeratorWrapper alloc] initWithEnumarator:self andFunc:^id(NSEnumerator * enumerator) {
+        id result = [enumerator nextObject];
+        if (result)
+            return func(result,index++);
+        return nil;
+    }];
+}
+
+- (NSEnumerator *)distinct
+{
+    return [self distinct:^id(id object) {
+        return object;
+    }];
+}
+
+- (NSEnumerator *)distinct:(id (^)(id))func
+{
+    __block NSMutableSet * set = [NSMutableSet set];
+    return [[NSEnumeratorWrapper alloc] initWithEnumarator:self andFunc:^id(NSEnumerator * enumerator) {
+        id object;
+        while (object = [enumerator nextObject])
+        {
+            id value = func(object);
+            if (![set member:value])
+            {
+                [set addObject:value];
+                return object;
+            }
+        };
+        set = nil;
+        return nil;
+    }];
+}
+
+- (NSEnumerator *)skip:(NSInteger)count
+{
+    for (int i = 0; i < count; i++)
+        if (![self nextObject])
+            break;
+    return self;
+}
+
+- (NSEnumerator *)take:(NSInteger)count
+{
+    __block int index = 0;
+    return [[NSEnumeratorWrapper alloc] initWithEnumarator:self andFunc:^id(NSEnumerator * enumerator) {
+        if (index >= count)
+            return nil;
+        index++;
+        return [enumerator nextObject];
+    }];
+}
+
+#pragma mark - Aggregators
 
 - (BOOL)all
 {
@@ -62,15 +171,6 @@
     return NO;
 }
 
-- (NSEnumerator *)concat:(NSEnumerator *)enumerator
-{
-    return [[NSEnumeratorWrapper alloc] initWithEnumarator:self andFunc:^id(NSEnumerator * selfEnumerator) {
-        id object = [selfEnumerator nextObject];
-        if (object) return object;
-        return [enumerator nextObject];
-    }];
-}
-
 - (NSInteger)count
 {
     NSInteger count = 0;
@@ -84,89 +184,24 @@
     return [[self where:predicate] count];
 }
 
-- (NSEnumerator *)distinct:(id (^)(id))func
-{
-    __block NSMutableSet * set = [NSMutableSet set];
-    return [[NSEnumeratorWrapper alloc] initWithEnumarator:self andFunc:^id(NSEnumerator * enumerator) {
-        id object = nil;
-        do
-        {
-            object = [enumerator nextObject];
-            id value = func(object);
-            if (object && ![set member:value])
-            {
-                [set addObject:value];
-                return object;
-            }
-        } while (object);
-        set = nil;
-        return nil;
-    }];
-}
+#pragma mark - Single Object Returners
 
 - (id)elementAt:(NSInteger)index
 {
     for (int i = 0; i < index; i++)
-        [self nextObject];
+        if (![self nextObject])
+            return nil;
     return [self nextObject];
 }
 
-- (NSEnumerator *)distinct
-{
-    return [self distinct:^id(id object) {
-        return object;
-    }];
-}
+#pragma mark - Enumerator Operators
 
-- (NSEnumerator *)select:(id (^)(id))func
+- (NSEnumerator *)concat:(NSEnumerator *)enumerator
 {
-    return [[NSEnumeratorWrapper alloc] initWithEnumarator:self andFunc:^id(NSEnumerator * enumerator) {
-        id result = [enumerator nextObject];
-        if (!result) return nil;
-        return func(result);
-    }];
-}
-
-- (NSEnumerator *)select_i:(id (^)(id, NSInteger))func
-{
-    __block NSInteger index = -1;
-    return [[NSEnumeratorWrapper alloc] initWithEnumarator:self andFunc:^id(NSEnumerator * enumerator) {
-        index++;
-        id result = [enumerator nextObject];
-        if (!result) return nil;
-        return func(result,index);
-    }];
-}
-
-- (NSEnumerator *)skip:(NSInteger)count
-{
-    for (int i = 0; i < count; i++)
-        [self nextObject];
-    return self;
-}
-
-- (NSEnumerator *)where:(BOOL (^)(id object))predicate
-{
-    return [[NSEnumeratorWrapper alloc] initWithEnumarator:self andFunc:^id(NSEnumerator * enumerator) {
-        id result = nil;
-        do
-            result = [enumerator nextObject];
-        while (result && !predicate(result));
-        return result;
-    }];
-}
-
-- (NSEnumerator *)where_i:(BOOL (^)(id, NSInteger))predicate
-{
-    __block NSInteger index = -1;
-    return [[NSEnumeratorWrapper alloc] initWithEnumarator:self andFunc:^id(NSEnumerator * enumerator) {
-        id result = nil;
-        do
-        {
-            result = [enumerator nextObject];
-            index++;
-        } while (result && !predicate(result,index));
-        return result;
+    return [[NSEnumeratorWrapper alloc] initWithEnumarator:self andFunc:^id(NSEnumerator * selfEnumerator) {
+        id object = [selfEnumerator nextObject];
+        if (object) return object;
+        return [enumerator nextObject];
     }];
 }
 

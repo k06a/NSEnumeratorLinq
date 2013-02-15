@@ -7,21 +7,35 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "NSKeyValuePair.h"
 
 @interface NSEnumerator (Linq)
+
+- (NSEnumerator *)where:(BOOL (^)(id))predicate;
+- (NSEnumerator *)where_i:(BOOL (^)(id, NSInteger))predicate;
+- (NSEnumerator *)select:(id (^)(id))predicate;
+- (NSEnumerator *)select_i:(id (^)(id, NSInteger))predicate;
+- (NSEnumerator *)distinct;
+- (NSEnumerator *)distinct:(id (^)(id))func;
+
+- (NSEnumerator *)skip:(NSInteger)count;
+- (NSEnumerator *)take:(NSInteger)count;
+
+#pragma mark - Aggregators
+
 - (BOOL)all;
 - (BOOL)all:(BOOL (^)(id))predicate;
 - (BOOL)any;
 - (BOOL)any:(BOOL (^)(id))predicate;
-- (NSEnumerator *)concat:(NSEnumerator *)enumerator;
 - (NSInteger)count;
 - (NSInteger)count:(BOOL (^)(id))predicate;
-- (NSEnumerator *)distinct:(id (^)(id))func;
-- (NSEnumerator *)distinct;
+
+#pragma mark - Single Object Returners
+
 - (id)elementAt:(NSInteger)index;
-- (NSEnumerator *)select:(id (^)(id))predicate;
-- (NSEnumerator *)select_i:(id (^)(id, NSInteger))predicate;
-- (NSEnumerator *)skip:(NSInteger)count;
-- (NSEnumerator *)where:(BOOL (^)(id))predicate;
-- (NSEnumerator *)where_i:(BOOL (^)(id, NSInteger))predicate;
+
+#pragma mark - Enumerator Operators
+
+- (NSEnumerator *)concat:(NSEnumerator *)enumerator;
+
 @end

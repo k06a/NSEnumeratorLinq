@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		25C7FECF16CEB31F00BAE1B6 /* NSKeyValuePair.m in Sources */ = {isa = PBXBuildFile; fileRef = 25C7FECE16CEB31F00BAE1B6 /* NSKeyValuePair.m */; };
 		25EC663F16A2D4050088F64D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 25EC663E16A2D4050088F64D /* Foundation.framework */; };
 		25EC664416A2D4050088F64D /* NSEnumerator+Linq.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 25EC664316A2D4050088F64D /* NSEnumerator+Linq.h */; };
 		25EC664616A2D4050088F64D /* NSEnumerator+Linq.m in Sources */ = {isa = PBXBuildFile; fileRef = 25EC664516A2D4050088F64D /* NSEnumerator+Linq.m */; };
@@ -42,6 +43,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		25C7FECD16CEB31F00BAE1B6 /* NSKeyValuePair.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSKeyValuePair.h; sourceTree = "<group>"; };
+		25C7FECE16CEB31F00BAE1B6 /* NSKeyValuePair.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSKeyValuePair.m; sourceTree = "<group>"; };
 		25EC663B16A2D4050088F64D /* libNSEnumeratorLinq.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libNSEnumeratorLinq.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		25EC663E16A2D4050088F64D /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		25EC664216A2D4050088F64D /* NSEnumeratorLinq-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSEnumeratorLinq-Prefix.pch"; sourceTree = "<group>"; };
@@ -111,6 +114,8 @@
 		25EC664016A2D4050088F64D /* NSEnumeratorLinq */ = {
 			isa = PBXGroup;
 			children = (
+				25C7FECD16CEB31F00BAE1B6 /* NSKeyValuePair.h */,
+				25C7FECE16CEB31F00BAE1B6 /* NSKeyValuePair.m */,
 				25EC664316A2D4050088F64D /* NSEnumerator+Linq.h */,
 				25EC664516A2D4050088F64D /* NSEnumerator+Linq.m */,
 				25EC664116A2D4050088F64D /* Supporting Files */,
@@ -244,6 +249,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				25EC664616A2D4050088F64D /* NSEnumerator+Linq.m in Sources */,
+				25C7FECF16CEB31F00BAE1B6 /* NSKeyValuePair.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -399,6 +405,7 @@
 				25EC666216A2D4060088F64D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		25EC666316A2D4060088F64D /* Build configuration list for PBXNativeTarget "NSEnumeratorLinqTests" */ = {
 			isa = XCConfigurationList;
@@ -407,6 +414,7 @@
 				25EC666516A2D4060088F64D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

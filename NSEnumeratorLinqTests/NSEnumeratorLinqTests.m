@@ -32,6 +32,21 @@
     [super tearDown];
 }
 
+#define Func(RET, A, BODY) ^RET(id A){return (BODY);}
+#define Func2(RET, A, B, BODY) ^RET(id A, id B){return (BODY);}
+#define Action(A, BODY) Func(void, A, BODY)
+#define Action2(A, B, BODY) Func(void, A, B, BODY)
+#define Transform(A, BODY) Func(id, A, BODY)
+#define Transform2(A, B, BODY) Func(id, A, B, BODY)
+#define Predicate(A, BODY) Func(BOOL, A, BODY)
+#define Predicate2(A, B, BODY) Func(BOOL, A, B, BODY)
+
+- (void)testAll
+{
+    id x = Predicate(a, [a intValue] + 100);
+    NSLog(@"%@", x);
+}
+
 - (void)testConcat
 {
     NSArray * arr0 = @[];
