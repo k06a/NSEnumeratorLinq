@@ -12,9 +12,9 @@
 @interface NSEnumerator (Linq)
 
 - (NSEnumerator *)where:(BOOL (^)(id))predicate;
-- (NSEnumerator *)where_i:(BOOL (^)(id, NSInteger))predicate;
+- (NSEnumerator *)where_i:(BOOL (^)(id,int))predicate;
 - (NSEnumerator *)select:(id (^)(id))predicate;
-- (NSEnumerator *)select_i:(id (^)(id, NSInteger))predicate;
+- (NSEnumerator *)select_i:(id (^)(id,int))predicate;
 - (NSEnumerator *)distinct;
 - (NSEnumerator *)distinct:(id (^)(id))func;
 
@@ -34,8 +34,14 @@
 
 - (id)elementAt:(NSInteger)index;
 
-#pragma mark - Enumerator Operators
+#pragma mark - Set Methods
 
 - (NSEnumerator *)concat:(NSEnumerator *)enumerator;
+
+#pragma mark - Export methods
+
+- (NSArray *)toArray;
+- (NSSet *)toSet;
+- (NSDictionary *)toDictionary;
 
 @end

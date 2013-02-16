@@ -61,7 +61,7 @@
     }];
 }
 
-- (NSEnumerator *)where_i:(BOOL (^)(id, NSInteger))predicate
+- (NSEnumerator *)where_i:(BOOL (^)(id,int))predicate
 {
     __block NSInteger index = 0;
     return [[NSEnumeratorWrapper alloc] initWithEnumarator:self andFunc:^id(NSEnumerator * enumerator) {
@@ -83,7 +83,7 @@
     }];
 }
 
-- (NSEnumerator *)select_i:(id (^)(id, NSInteger))func
+- (NSEnumerator *)select_i:(id (^)(id,int))func
 {
     __block NSInteger index = 0;
     return [[NSEnumeratorWrapper alloc] initWithEnumarator:self andFunc:^id(NSEnumerator * enumerator) {
@@ -194,7 +194,7 @@
     return [self nextObject];
 }
 
-#pragma mark - Enumerator Operators
+#pragma mark - Set Methods
 
 - (NSEnumerator *)concat:(NSEnumerator *)enumerator
 {
@@ -203,6 +203,26 @@
         if (object) return object;
         return [enumerator nextObject];
     }];
+}
+
+#pragma mark - Export methods
+
+- (NSArray *)toArray
+{
+    return [self allObjects];
+}
+
+- (NSSet *)toSet
+{
+    return [NSSet setWithArray:[self allObjects]];
+}
+
+- (NSDictionary *)toDictionary
+{
+    NSMutableDictionary * dict = [NSMutableDictionary dictionary];
+    for (NSKeyValuePair * pair in self)
+        [dict setObject:pair.value forKey:pair.key];
+    return dict;
 }
 
 @end

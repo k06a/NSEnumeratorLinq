@@ -55,5 +55,11 @@ http://msdn.microsoft.com/en-us/library/system.linq.enumerable_methods.aspx
 - (NSEnumerator *)concat:(NSEnumerator *)enumerator;
 ```
 
+###Export methods
+```
+- (NSArray *)toArray;
+- (NSSet *)toSet;
+- (NSDictionary *)toDictionary;
+```
 ---
 Written with [Mou](http://mouapp.com) - The missing Markdown editor for web developers
