@@ -146,13 +146,13 @@
     NSArray * arr4 = @[@1,@3,@5,@7];
     NSArray * arr5 = @[@2,@4,@8,@10];
     
-    id (^func)(id) = ^id(id a){return @([a intValue]%2);};
-    STAssertEqualObjects(set0, [[[arr0 objectEnumerator] distinct:func] toSetForTest], @"Empty array");
-    STAssertEqualObjects(set1, [[[arr1 objectEnumerator] distinct:func] toSetForTest], @"Array of size 1");
-    STAssertEqualObjects(set3, [[[arr2 objectEnumerator] distinct:func] toSetForTest], @"Array of size 2");
-    STAssertEqualObjects(set3, [[[arr3 objectEnumerator] distinct:func] toSetForTest], @"Array of size 3");
-    STAssertEqualObjects(set1, [[[arr4 objectEnumerator] distinct:func] toSetForTest], @"Array of size 4");
-    STAssertEqualObjects(set2, [[[arr5 objectEnumerator] distinct:func] toSetForTest], @"Array of size 5");
+    id (^transform)(id) = TRANSFORM(id a, @([a intValue]%2));
+    STAssertEqualObjects(set0, [[[arr0 objectEnumerator] distinct:transform] toSetForTest], @"Empty array");
+    STAssertEqualObjects(set1, [[[arr1 objectEnumerator] distinct:transform] toSetForTest], @"Array of size 1");
+    STAssertEqualObjects(set3, [[[arr2 objectEnumerator] distinct:transform] toSetForTest], @"Array of size 2");
+    STAssertEqualObjects(set3, [[[arr3 objectEnumerator] distinct:transform] toSetForTest], @"Array of size 3");
+    STAssertEqualObjects(set1, [[[arr4 objectEnumerator] distinct:transform] toSetForTest], @"Array of size 4");
+    STAssertEqualObjects(set2, [[[arr5 objectEnumerator] distinct:transform] toSetForTest], @"Array of size 5");
 }
 
 - (void)testDistinct
@@ -217,7 +217,7 @@
     NSArray * ans4 = @[@0,@2,@12,@36];
     NSArray * ans5 = @[@0,@2,@12,@36,@80];
     
-    id (^transform)(id, NSInteger) = TRANSFORM_2(id a, int i, @(i*i*[a intValue]));
+    id (^transform)(id,int) = TRANSFORM_2(id a, int i, @(i*i*[a intValue]));
     STAssertEqualObjects(ans0, [[[arr0 objectEnumerator] select_i:transform] allObjects], @"Empty array");
     STAssertEqualObjects(ans1, [[[arr1 objectEnumerator] select_i:transform] allObjects], @"Array of size 1");
     STAssertEqualObjects(ans2, [[[arr2 objectEnumerator] select_i:transform] allObjects], @"Array of size 2");
