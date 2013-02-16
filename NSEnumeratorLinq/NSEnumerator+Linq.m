@@ -285,6 +285,33 @@
     }];
 }
 
+- (NSEnumerator *)union:(NSEnumerator *)secondEnumerator
+{
+    return [[self concat:secondEnumerator] distinct];
+}
+
+- (NSEnumerator *)intersect:(NSEnumerator *)secondEnumerator
+{
+    __block NSMutableSet * set = [NSMutableSet set];
+    for (id object in secondEnumerator)
+        [set addObject:object];
+    
+    return [self where:^BOOL(id object) {
+        return [set member:object] != nil;
+    }];
+}
+
+- (NSEnumerator *)except:(NSEnumerator *)secondEnumerator
+{
+    __block NSMutableSet * set = [NSMutableSet set];
+    for (id object in secondEnumerator)
+        [set addObject:object];
+    
+    return [self where:^BOOL(id object) {
+        return [set member:object] == nil;
+    }];
+}
+
 #pragma mark - Export methods
 
 - (NSArray *)toArray

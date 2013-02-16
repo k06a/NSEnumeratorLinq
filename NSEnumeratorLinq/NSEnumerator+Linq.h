@@ -46,6 +46,9 @@
 #pragma mark - Set Methods
 
 - (NSEnumerator *)concat:(NSEnumerator *)secondEnumerator;
+- (NSEnumerator *)union:(NSEnumerator *)secondEnumerator;
+- (NSEnumerator *)intersect:(NSEnumerator *)secondEnumerator;
+- (NSEnumerator *)except:(NSEnumerator *)secondEnumerator;
 
 #pragma mark - Export methods
 

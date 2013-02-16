@@ -62,6 +62,10 @@ http://msdn.microsoft.com/en-us/library/system.linq.enumerable_methods.aspx
 ###Set Methods
 ```
 - (NSEnumerator *)concat:(NSEnumerator *)enumerator;
+- (NSEnumerator *)union:(NSEnumerator *)secondEnumerator;
+- (NSEnumerator *)intersect:(NSEnumerator *)secondEnumerator;
+- (NSEnumerator *)except:(NSEnumerator *)secondEnumerator;
+
 ```
 
 ###Export methods
