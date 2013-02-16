@@ -61,5 +61,9 @@ http://msdn.microsoft.com/en-us/library/system.linq.enumerable_methods.aspx
 - (NSSet *)toSet;
 - (NSDictionary *)toDictionary;
 ```
+
+>! Spoiler title
+>! another text
+
 ---
 Written with [Mou](http://mouapp.com) - The missing Markdown editor for web developers
