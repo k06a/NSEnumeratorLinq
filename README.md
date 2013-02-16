@@ -25,9 +25,9 @@ http://msdn.microsoft.com/en-us/library/system.linq.enumerable_methods.aspx
 ###Main Methods
 ```
 - (NSEnumerator *)where:(BOOL (^)(id))predicate;
-- (NSEnumerator *)where_i:(BOOL (^)(id, NSInteger))predicate;
+- (NSEnumerator *)where_i:(BOOL (^)(id,int))predicate;
 - (NSEnumerator *)select:(id (^)(id))predicate;
-- (NSEnumerator *)select_i:(id (^)(id, NSInteger))predicate;
+- (NSEnumerator *)select_i:(id (^)(id,int))predicate;
 - (NSEnumerator *)distinct;
 - (NSEnumerator *)distinct:(id<NSCopying> (^)(id))func;
 
