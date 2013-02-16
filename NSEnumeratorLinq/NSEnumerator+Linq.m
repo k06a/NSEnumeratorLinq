@@ -128,6 +128,15 @@
     return self;
 }
 
+- (NSEnumerator *)skipWhile:(BOOL (^)(id))predicate;
+{
+    id object;
+    do
+        object = [self nextObject];
+    while (object && predicate(object));
+    return self;
+}
+
 - (NSEnumerator *)take:(NSInteger)count
 {
     __block int index = 0;
@@ -136,6 +145,19 @@
             return nil;
         index++;
         return [enumerator nextObject];
+    }];
+}
+
+- (NSEnumerator *)takeWhile:(BOOL (^)(id))predicate;
+{
+    __block BOOL finished = NO;
+    return [[NSEnumeratorWrapper alloc] initWithEnumarator:self nextObject:^id(NSEnumerator * enumerator) {
+        if (finished)
+            return nil;
+        id object = [enumerator nextObject];
+        if (!predicate(object))
+            finished = YES;
+        return finished ? nil : object;
     }];
 }
 

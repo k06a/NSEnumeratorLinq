@@ -32,10 +32,11 @@ http://msdn.microsoft.com/en-us/library/system.linq.enumerable_methods.aspx
 - (NSEnumerator *)distinct:(id<NSCopying> (^)(id))func;
 
 - (NSEnumerator *)skip:(NSInteger)count;
+- (NSEnumerator *)skipWhile:(BOOL (^)(id))predicate;
 - (NSEnumerator *)take:(NSInteger)count;
+- (NSEnumerator *)takeWhile:(BOOL (^)(id))predicate;
 
 - (NSEnumerator *)groupBy:(id<NSCopying> (^)(id))func;
-
 ```
 
 ###Aggregators
