@@ -52,7 +52,7 @@
 
 #pragma - Generation Methods
 
-+ (NSEnumerator *)range:(int)start to:(int)count;
++ (NSEnumerator *)range:(int)start count:(int)count;
 + (NSEnumerator *)repeat:(id)item count:(int)count;
 + (NSEnumerator *)empty;
 

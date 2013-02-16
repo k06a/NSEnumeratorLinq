@@ -268,7 +268,7 @@
 
 #pragma - Generation Methods
 
-+ (NSEnumerator *)range:(int)start to:(int)count
++ (NSEnumerator *)range:(int)start count:(int)count
 {
     __block int index = start;
     return [[NSEnumeratorWrapper alloc] initWithEnumarator:nil nextObject:^id(NSEnumerator * enumerator) {

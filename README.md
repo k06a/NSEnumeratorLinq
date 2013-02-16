@@ -29,10 +29,13 @@ http://msdn.microsoft.com/en-us/library/system.linq.enumerable_methods.aspx
 - (NSEnumerator *)select:(id (^)(id))predicate;
 - (NSEnumerator *)select_i:(id (^)(id, NSInteger))predicate;
 - (NSEnumerator *)distinct;
-- (NSEnumerator *)distinct:(id (^)(id))func;
+- (NSEnumerator *)distinct:(id<NSCopying> (^)(id))func;
 
 - (NSEnumerator *)skip:(NSInteger)count;
 - (NSEnumerator *)take:(NSInteger)count;
+
+- (NSEnumerator *)groupBy:(id<NSCopying> (^)(id))func;
+
 ```
 
 ###Aggregators
@@ -48,6 +51,10 @@ http://msdn.microsoft.com/en-us/library/system.linq.enumerable_methods.aspx
 ###Single Object Returners
 ```
 - (id)elementAt:(NSInteger)index;
+- (id)firstOrDefault;
+- (id)firstOrDefault:(BOOL (^)(id))predicate;
+- (id)lastOrDefault;
+- (id)lastOrDefault:(BOOL (^)(id))predicate;
 ```
 
 ###Set Methods
@@ -62,5 +69,12 @@ http://msdn.microsoft.com/en-us/library/system.linq.enumerable_methods.aspx
 - (NSDictionary *)toDictionary;
 ```
 
+
+###Generation Methods
+```
++ (NSEnumerator *)range:(int)start count:(int)count;
++ (NSEnumerator *)repeat:(id)item count:(int)count;
++ (NSEnumerator *)empty;
+```
 ---
 Written with [Mou](http://mouapp.com) - The missing Markdown editor for web developers
