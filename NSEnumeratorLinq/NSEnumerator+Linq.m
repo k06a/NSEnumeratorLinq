@@ -312,6 +312,17 @@
     }];
 }
 
+- (NSEnumerator *)zip:(NSEnumerator *)secondEnumerator with:(id (^)(id,id))func
+{
+    return [[NSEnumeratorWrapper alloc] initWithEnumarator:self nextObject:^id(NSEnumerator * enumerator) {
+        id object1 = [enumerator nextObject];
+        id object2 = [secondEnumerator nextObject];
+        if (object1 || object2)
+            return func(object1,object2);
+        return nil;
+    }];
+}
+
 #pragma mark - Export methods
 
 - (NSArray *)toArray

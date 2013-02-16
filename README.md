@@ -65,7 +65,7 @@ http://msdn.microsoft.com/en-us/library/system.linq.enumerable_methods.aspx
 - (NSEnumerator *)union:(NSEnumerator *)secondEnumerator;
 - (NSEnumerator *)intersect:(NSEnumerator *)secondEnumerator;
 - (NSEnumerator *)except:(NSEnumerator *)secondEnumerator;
-
+- (NSEnumerator *)zip:(NSEnumerator *)secondEnumerator with:(id (^)(id,id))func;
 ```
 
 ###Export methods
