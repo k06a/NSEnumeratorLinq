@@ -33,15 +33,25 @@
 #pragma mark - Single Object Returners
 
 - (id)elementAt:(NSInteger)index;
+- (id)firstOrDefault;
+- (id)firstOrDefault:(BOOL (^)(id))predicate;
+- (id)lastOrDefault;
+- (id)lastOrDefault:(BOOL (^)(id))predicate;
 
 #pragma mark - Set Methods
 
-- (NSEnumerator *)concat:(NSEnumerator *)enumerator;
+- (NSEnumerator *)concat:(NSEnumerator *)secondEnumerator;
 
 #pragma mark - Export methods
 
 - (NSArray *)toArray;
 - (NSSet *)toSet;
 - (NSDictionary *)toDictionary;
+
+#pragma - Generation Methods
+
++ (NSEnumerator *)range:(int)start to:(int)count;
++ (NSEnumerator *)repeat:(id)item count:(int)count;
++ (NSEnumerator *)empty;
 
 @end

@@ -32,19 +32,37 @@
     [super tearDown];
 }
 
-#define Func(RET, A, BODY) ^RET(id A){return (BODY);}
-#define Func2(RET, A, B, BODY) ^RET(id A, id B){return (BODY);}
-#define Action(A, BODY) Func(void, A, BODY)
-#define Action2(A, B, BODY) Func(void, A, B, BODY)
-#define Transform(A, BODY) Func(id, A, BODY)
-#define Transform2(A, B, BODY) Func(id, A, B, BODY)
-#define Predicate(A, BODY) Func(BOOL, A, BODY)
-#define Predicate2(A, B, BODY) Func(BOOL, A, B, BODY)
+#define FUNC(RET, A, BODY) ^RET(A){return (BODY);}
+#define ACTION(A, BODY) FUNC(void, A, BODY)
+#define TRANSFORM(A, BODY) FUNC(id, A, BODY)
+#define PREDICATE(A, BODY) FUNC(BOOL, A, BODY)
+
+#define FUNC_2(RET, A, B, BODY) ^RET(A, B){return (BODY);}
+#define ACTION_2(A, B, BODY) FUNC_2(void, A, B, BODY)
+#define TRANSFORM_2(A, B, BODY) FUNC_2(id, A, B, BODY)
+#define PREDICATE_2(A, B, BODY) FUNC_2(BOOL, A, B, BODY)
 
 - (void)testAll
 {
-    id x = Predicate(a, [a intValue] + 100);
-    NSLog(@"%@", x);
+    NSArray * arr1 = @[@1,@3,@5,@7];
+    NSArray * arr2 = @[@2,@4,@6,@8];
+    
+    STAssertTrue([[arr1 objectEnumerator] all:PREDICATE(id a, [a intValue] % 2 == 1)], @"All items odd");
+    STAssertTrue([[arr2 objectEnumerator] all:PREDICATE(id a, [a intValue] % 2 == 0)], @"All items even");
+    
+    STAssertFalse([[arr1 objectEnumerator] all:PREDICATE(id a, [a intValue] < 5)], @"Odd array not less 5");
+    STAssertFalse([[arr2 objectEnumerator] all:PREDICATE(id a, [a intValue] < 5)], @"Even array not less 5");
+}
+
+- (void)testAny
+{
+    NSArray * arr1 = @[@1,@2,@3];
+    
+    STAssertFalse([[arr1 objectEnumerator] any:PREDICATE(id a, [a intValue] == 0)], @"Not exist 0");
+    STAssertTrue([[arr1 objectEnumerator] any:PREDICATE(id a, [a intValue] == 1)], @"Exist 1");
+    STAssertTrue([[arr1 objectEnumerator] any:PREDICATE(id a, [a intValue] == 2)], @"Exist 2");
+    STAssertTrue([[arr1 objectEnumerator] any:PREDICATE(id a, [a intValue] == 3)], @"Exist 3");
+    STAssertFalse([[arr1 objectEnumerator] any:PREDICATE(id a, [a intValue] == 4)], @"Not exist 4");
 }
 
 - (void)testConcat
@@ -150,12 +168,12 @@
     NSArray * arr4 = @[@1,@1,@2,@2];
     NSArray * arr5 = @[@1,@1,@2,@1,@2];
     
-    STAssertEqualObjects(set0, [NSSet setWithArray:[[[arr0 objectEnumerator] distinct] allObjects]], @"Empty array");
-    STAssertEqualObjects(set1, [NSSet setWithArray:[[[arr1 objectEnumerator] distinct] allObjects]], @"Array of size 1");
-    STAssertEqualObjects(set2, [NSSet setWithArray:[[[arr2 objectEnumerator] distinct] allObjects]], @"Array of size 2");
-    STAssertEqualObjects(set2, [NSSet setWithArray:[[[arr3 objectEnumerator] distinct] allObjects]], @"Array of size 3");
-    STAssertEqualObjects(set2, [NSSet setWithArray:[[[arr4 objectEnumerator] distinct] allObjects]], @"Array of size 4");
-    STAssertEqualObjects(set2, [NSSet setWithArray:[[[arr5 objectEnumerator] distinct] allObjects]], @"Array of size 5");
+    STAssertEqualObjects(set0, [[[arr0 objectEnumerator] distinct] toSet], @"Empty array");
+    STAssertEqualObjects(set1, [[[arr1 objectEnumerator] distinct] toSet], @"Array of size 1");
+    STAssertEqualObjects(set2, [[[arr2 objectEnumerator] distinct] toSet], @"Array of size 2");
+    STAssertEqualObjects(set2, [[[arr3 objectEnumerator] distinct] toSet], @"Array of size 3");
+    STAssertEqualObjects(set2, [[[arr4 objectEnumerator] distinct] toSet], @"Array of size 4");
+    STAssertEqualObjects(set2, [[[arr5 objectEnumerator] distinct] toSet], @"Array of size 5");
 }
 
 - (void)testSelect
@@ -174,7 +192,7 @@
     NSArray * ans4 = @[@3,@5,@7,@9];
     NSArray * ans5 = @[@3,@5,@7,@9,@11];
     
-    id (^transform)(id) = ^id(id a){return @([a intValue]*2 + 1);};
+    id (^transform)(id) = TRANSFORM(id a, @([a intValue]*2 + 1));
     STAssertEqualObjects(ans0, [[[arr0 objectEnumerator] select:transform] allObjects], @"Empty array");
     STAssertEqualObjects(ans1, [[[arr1 objectEnumerator] select:transform] allObjects], @"Array of size 1");
     STAssertEqualObjects(ans2, [[[arr2 objectEnumerator] select:transform] allObjects], @"Array of size 2");
@@ -199,7 +217,7 @@
     NSArray * ans4 = @[@0,@2,@12,@36];
     NSArray * ans5 = @[@0,@2,@12,@36,@80];
     
-    id (^transform)(id, NSInteger) = ^id(id a,NSInteger i){return @(i*i*[a intValue]);};
+    id (^transform)(id, NSInteger) = TRANSFORM_2(id a, int i, @(i*i*[a intValue]));
     STAssertEqualObjects(ans0, [[[arr0 objectEnumerator] select_i:transform] allObjects], @"Empty array");
     STAssertEqualObjects(ans1, [[[arr1 objectEnumerator] select_i:transform] allObjects], @"Array of size 1");
     STAssertEqualObjects(ans2, [[[arr2 objectEnumerator] select_i:transform] allObjects], @"Array of size 2");
@@ -276,9 +294,9 @@
     NSArray * ans2 = @[@3,@4,@5];
     NSArray * ans3 = @[@2,@5,@8];
     
-    STAssertEqualObjects(ans1, [[[arr objectEnumerator] where:^BOOL(id a) {return [a intValue]%2 == 1;}] allObjects], @"Odd values");
-    STAssertEqualObjects(ans2, [[[arr objectEnumerator] where:^BOOL(id a) {return [a intValue]>2 && [a intValue]<=5;}] allObjects], @"Values in range (2,5]");
-    STAssertEqualObjects(ans3, [[[arr objectEnumerator] where:^BOOL(id a) {return [a intValue]%3 == 2;}] allObjects], @"Values x%3==2");
+    STAssertEqualObjects(ans1, [[[arr objectEnumerator] where:PREDICATE(id a, [a intValue]%2 == 1)] allObjects], @"Odd values");
+    STAssertEqualObjects(ans2, [[[arr objectEnumerator] where:PREDICATE(id a, [a intValue]>2 && [a intValue] <= 5)] allObjects], @"Values in range (2,5]");
+    STAssertEqualObjects(ans3, [[[arr objectEnumerator] where:PREDICATE(id a, [a intValue]%3 == 2)] allObjects], @"Values x%3==2");
 }
 
 - (void)testWhere_i
@@ -289,9 +307,9 @@
     NSArray * ans2 = @[@400,@500,@600];
     NSArray * ans3 = @[@300,@600];
     
-    STAssertEqualObjects(ans1, [[[arr objectEnumerator] where_i:^BOOL(id a, NSInteger i) {return i%2 == 1;}] allObjects], @"Odd indexes");
-    STAssertEqualObjects(ans2, [[[arr objectEnumerator] where_i:^BOOL(id a, NSInteger i) {return i>2 && i<=5;}] allObjects], @"Indexes in range (2,5]");
-    STAssertEqualObjects(ans3, [[[arr objectEnumerator] where_i:^BOOL(id a, NSInteger i) {return i%3 == 2;}] allObjects], @"Values x%3==2");
+    STAssertEqualObjects(ans1, [[[arr objectEnumerator] where_i:PREDICATE_2(id a, int i, i%2 == 1)] allObjects], @"Odd indexes");
+    STAssertEqualObjects(ans2, [[[arr objectEnumerator] where_i:PREDICATE_2(id a, int i, i>2 && i<=5)] allObjects], @"Indexes in range (2,5]");
+    STAssertEqualObjects(ans3, [[[arr objectEnumerator] where_i:PREDICATE_2(id a, int i, i%3 == 2)] allObjects], @"Values x%3==2");
 }
 
 @end
