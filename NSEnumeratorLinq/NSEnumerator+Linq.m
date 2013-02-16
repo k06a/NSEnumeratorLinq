@@ -171,11 +171,28 @@
         id key = func(object);
         NSMutableArray * value = [dict objectForKey:key];
         if (!value)
-            [dict setObject:(value = [NSMutableArray array]) forKey:key];
+        {
+            value = [NSMutableArray array];
+            [dict setObject:value forKey:key];
+        }
         [value addObject:object];
     };
 
     return [dict keyValueEnumerator];
+}
+
+- (NSEnumerator *)selectMany:(NSEnumerator * (^)(id))func
+{
+    __block NSEnumerator * item = nil;
+    return [[NSEnumeratorWrapper alloc] initWithEnumarator:self nextObject:^id(NSEnumerator * enumerator) {
+        id object = [item nextObject];
+        if (!object)
+        {
+            item = [enumerator nextObject];
+            object = [item nextObject];
+        }
+        return object;
+    }];
 }
 
 #pragma mark - Aggregators

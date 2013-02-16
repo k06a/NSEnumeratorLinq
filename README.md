@@ -37,6 +37,7 @@ http://msdn.microsoft.com/en-us/library/system.linq.enumerable_methods.aspx
 - (NSEnumerator *)takeWhile:(BOOL (^)(id))predicate;
 
 - (NSEnumerator *)groupBy:(id<NSCopying> (^)(id))func;
+- (NSEnumerator *)selectMany:(NSEnumerator * (^)(id))func;
 ```
 
 ###Aggregators

@@ -24,6 +24,7 @@
 - (NSEnumerator *)takeWhile:(BOOL (^)(id))predicate;
 
 - (NSEnumerator *)groupBy:(id<NSCopying> (^)(id))func;
+- (NSEnumerator *)selectMany:(NSEnumerator * (^)(id))func;
 
 #pragma mark - Aggregators
 
