@@ -1,6 +1,6 @@
 //
-//  NSEnumeratorLinq.m
-//  NSEnumeratorLinq
+//  NSEnumerator+Linq.m
+//  NSEnumerator+Linq
 //
 //  Created by Антон Буков on 13.01.13.
 //  Copyright (c) 2013 Happy Nation Project. All rights reserved.
@@ -101,7 +101,7 @@
     }];
 }
 
-- (NSEnumerator *)distinct:(id (^)(id))func
+- (NSEnumerator *)distinct:(id<NSCopying> (^)(id))func
 {
     __block NSMutableSet * set = [NSMutableSet set];
     return [[NSEnumeratorWrapper alloc] initWithEnumarator:self nextObject:^id(NSEnumerator * enumerator) {
@@ -137,6 +137,23 @@
         index++;
         return [enumerator nextObject];
     }];
+}
+
+- (NSEnumerator *)groupBy:(id<NSCopying> (^)(id))func
+{
+    NSMutableDictionary * dict = [NSMutableDictionary dictionary];
+    
+    id object;
+    while (object = [self nextObject])
+    {
+        id key = func(object);
+        NSMutableArray * value = [dict objectForKey:key];
+        if (!value)
+            [dict setObject:(value = [NSMutableArray array]) forKey:key];
+        [value addObject:object];
+    };
+
+    return [dict keyValueEnumerator];
 }
 
 #pragma mark - Aggregators

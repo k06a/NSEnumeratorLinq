@@ -1,6 +1,6 @@
 //
-//  NSEnumeratorLinq.h
-//  NSEnumeratorLinq
+//  NSEnumerator+Linq.h
+//  NSEnumerator+Linq
 //
 //  Created by Антон Буков on 13.01.13.
 //  Copyright (c) 2013 Happy Nation Project. All rights reserved.
@@ -16,10 +16,12 @@
 - (NSEnumerator *)select:(id (^)(id))predicate;
 - (NSEnumerator *)select_i:(id (^)(id,int))predicate;
 - (NSEnumerator *)distinct;
-- (NSEnumerator *)distinct:(id (^)(id))func;
+- (NSEnumerator *)distinct:(id<NSCopying> (^)(id))func;
 
 - (NSEnumerator *)skip:(NSInteger)count;
 - (NSEnumerator *)take:(NSInteger)count;
+
+- (NSEnumerator *)groupBy:(id<NSCopying> (^)(id))func;
 
 #pragma mark - Aggregators
 
