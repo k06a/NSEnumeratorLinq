@@ -32,16 +32,6 @@
     [super tearDown];
 }
 
-#define FUNC(RET, A, BODY) ^RET(A){return (BODY);}
-#define ACTION(A, BODY) FUNC(void, A, BODY)
-#define TRANSFORM(A, BODY) FUNC(id, A, BODY)
-#define PREDICATE(A, BODY) FUNC(BOOL, A, BODY)
-
-#define FUNC_2(RET, A, B, BODY) ^RET(A, B){return (BODY);}
-#define ACTION_2(A, B, BODY) FUNC_2(void, A, B, BODY)
-#define TRANSFORM_2(A, B, BODY) FUNC_2(id, A, B, BODY)
-#define PREDICATE_2(A, B, BODY) FUNC_2(BOOL, A, B, BODY)
-
 - (void)testAll
 {
     NSArray * arr1 = @[@1,@3,@5,@7];

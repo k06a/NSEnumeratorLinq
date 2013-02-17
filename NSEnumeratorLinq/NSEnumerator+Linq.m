@@ -323,6 +323,15 @@
     }];
 }
 
+- (NSEnumerator *)join:(NSEnumerator *)secondEnumerator
+         firstSelector:(id<NSCopying> (^)(id))firstSelector
+        secondSelector:(id<NSCopying> (^)(id))secondSelector
+        resultSelector:(id (^)(id,id))resultSelector
+{
+    NSDictionary * dict = [[secondEnumerator groupBy:FUNC(id<NSCopying> ,id a, secondSelector(a))] toDictionary];
+    return [self selectMany:FUNC(NSEnumerator *, id a, resultSelector(a, dict[firstSelector(a)]))];
+}
+
 #pragma mark - Export methods
 
 - (NSArray *)toArray

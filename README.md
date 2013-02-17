@@ -65,7 +65,12 @@ http://msdn.microsoft.com/en-us/library/system.linq.enumerable_methods.aspx
 - (NSEnumerator *)union:(NSEnumerator *)secondEnumerator;
 - (NSEnumerator *)intersect:(NSEnumerator *)secondEnumerator;
 - (NSEnumerator *)except:(NSEnumerator *)secondEnumerator;
-- (NSEnumerator *)zip:(NSEnumerator *)secondEnumerator with:(id (^)(id,id))func;
+- (NSEnumerator *)zip:(NSEnumerator *)secondEnumerator
+                 with:(id (^)(id,id))func;
+- (NSEnumerator *)join:(NSEnumerator *)secondEnumerator
+         firstSelector:(id<NSCopying> (^)(id))firstSelector
+        secondSelector:(id<NSCopying> (^)(id))secondSelector
+        resultSelector:(id (^)(id,id))resultSelector;
 ```
 
 ###Export methods
