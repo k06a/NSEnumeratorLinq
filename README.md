@@ -61,7 +61,7 @@ http://msdn.microsoft.com/en-us/library/system.linq.enumerable_methods.aspx
 
 ###Set Methods
 ```
-- (NSEnumerator *)concat:(NSEnumerator *)enumerator;
+- (NSEnumerator *)concat:(NSEnumerator *)secondEnumerator;
 - (NSEnumerator *)union:(NSEnumerator *)secondEnumerator;
 - (NSEnumerator *)intersect:(NSEnumerator *)secondEnumerator;
 - (NSEnumerator *)except:(NSEnumerator *)secondEnumerator;
@@ -78,6 +78,7 @@ http://msdn.microsoft.com/en-us/library/system.linq.enumerable_methods.aspx
 - (NSArray *)toArray;
 - (NSSet *)toSet;
 - (NSDictionary *)toDictionary;
+- (NSMutableDictionary *)toMutableDictionary
 ```
 
 

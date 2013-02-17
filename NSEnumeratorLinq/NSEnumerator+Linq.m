@@ -346,6 +346,11 @@
 
 - (NSDictionary *)toDictionary
 {
+    return [self toMutableDictionary];
+}
+
+- (NSMutableDictionary *)toMutableDictionary
+{
     NSMutableDictionary * dict = [NSMutableDictionary dictionary];
     for (NSKeyValuePair * pair in self)
         [dict setObject:pair.value forKey:pair.key];

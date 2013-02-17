@@ -71,6 +71,7 @@
 - (NSArray *)toArray;
 - (NSSet *)toSet;
 - (NSDictionary *)toDictionary;
+- (NSMutableDictionary *)toMutableDictionary;
 
 #pragma - Generation Methods
 
