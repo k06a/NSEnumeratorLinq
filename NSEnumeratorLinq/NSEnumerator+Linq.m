@@ -161,14 +161,14 @@
     }];
 }
 
-- (NSEnumerator *)groupBy:(id<NSCopying> (^)(id))func
+- (NSEnumerator *)groupBy:(id<NSCopying> (^)(id))keySelector
 {
     NSMutableDictionary * dict = [NSMutableDictionary dictionary];
     
     id object;
     while (object = [self nextObject])
     {
-        id key = func(object);
+        id key = keySelector(object);
         NSMutableArray * value = [dict objectForKey:key];
         if (!value)
         {
@@ -328,8 +328,8 @@
         secondSelector:(id<NSCopying> (^)(id))secondSelector
         resultSelector:(id (^)(id,id))resultSelector
 {
-    NSDictionary * dict = [[secondEnumerator groupBy:FUNC(id<NSCopying> ,id a, secondSelector(a))] toDictionary];
-    return [self selectMany:FUNC(NSEnumerator *, id a, resultSelector(a, dict[firstSelector(a)]))];
+    NSDictionary * lookup = [secondEnumerator toLookup:secondSelector];
+    return [self selectMany:FUNC(NSEnumerator *, id a, resultSelector(a, lookup[firstSelector(a)]))];
 }
 
 #pragma mark - Export methods
@@ -346,15 +346,20 @@
 
 - (NSDictionary *)toDictionary
 {
-    return [self toMutableDictionary];
-}
-
-- (NSMutableDictionary *)toMutableDictionary
-{
     NSMutableDictionary * dict = [NSMutableDictionary dictionary];
     for (NSKeyValuePair * pair in self)
         [dict setObject:pair.value forKey:pair.key];
     return dict;
+}
+
+- (NSDictionary *)toDictionary:(id<NSCopying> (^)(id))keySelector
+{
+    return [[self select:TRANSFORM(id a, [NSKeyValuePair pairWithKey:keySelector(a) value:a])] toDictionary];
+}
+
+- (NSDictionary *)toLookup:(id<NSCopying> (^)(id))keySelector
+{
+    return [[self groupBy:keySelector] toDictionary];
 }
 
 #pragma - Generation Methods

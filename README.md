@@ -36,7 +36,7 @@ http://msdn.microsoft.com/en-us/library/system.linq.enumerable_methods.aspx
 - (NSEnumerator *)take:(NSInteger)count;
 - (NSEnumerator *)takeWhile:(BOOL (^)(id))predicate;
 
-- (NSEnumerator *)groupBy:(id<NSCopying> (^)(id))func;
+- (NSEnumerator *)groupBy:(id<NSCopying> (^)(id))keySelector;
 - (NSEnumerator *)selectMany:(NSEnumerator * (^)(id))func;
 ```
 
@@ -78,9 +78,9 @@ http://msdn.microsoft.com/en-us/library/system.linq.enumerable_methods.aspx
 - (NSArray *)toArray;
 - (NSSet *)toSet;
 - (NSDictionary *)toDictionary;
-- (NSMutableDictionary *)toMutableDictionary
+- (NSDictionary *)toDictionary:(id<NSCopying> (^)(id))keySelector;
+- (NSDictionary *)toLookup:(id<NSCopying> (^)(id))keySelector;
 ```
-
 
 ###Generation Methods
 ```
