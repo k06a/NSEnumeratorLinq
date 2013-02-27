@@ -42,12 +42,19 @@ http://msdn.microsoft.com/en-us/library/system.linq.enumerable_methods.aspx
 
 ###Aggregators
 ```
+- (id)aggregate:(id (^)(id,id))func;
 - (BOOL)all;
 - (BOOL)all:(BOOL (^)(id))predicate;
 - (BOOL)any;
 - (BOOL)any:(BOOL (^)(id))predicate;
+- (BOOL)contains:(id)object;
+- (BOOL)containsObject:(id)object;
 - (NSInteger)count;
 - (NSInteger)count:(BOOL (^)(id))predicate;
+- (id)max;
+- (id)max:(id (^)(id))func;
+- (id)min;
+- (id)min:(id (^)(id))func;
 ```
 
 ###Single Object Returners
@@ -65,12 +72,22 @@ http://msdn.microsoft.com/en-us/library/system.linq.enumerable_methods.aspx
 - (NSEnumerator *)union:(NSEnumerator *)secondEnumerator;
 - (NSEnumerator *)intersect:(NSEnumerator *)secondEnumerator;
 - (NSEnumerator *)except:(NSEnumerator *)secondEnumerator;
+
 - (NSEnumerator *)zip:(NSEnumerator *)secondEnumerator
                  with:(id (^)(id,id))func;
+
+- (NSEnumerator *)join:(NSEnumerator *)secondEnumerator
+         firstSelector:(id<NSCopying> (^)(id))firstSelector
+        secondSelector:(id<NSCopying> (^)(id))secondSelector;
+
 - (NSEnumerator *)join:(NSEnumerator *)secondEnumerator
          firstSelector:(id<NSCopying> (^)(id))firstSelector
         secondSelector:(id<NSCopying> (^)(id))secondSelector
         resultSelector:(id (^)(id,id))resultSelector;
+
+- (NSEnumerator *)groupJoin:(NSEnumerator *)secondEnumerator
+              firstSelector:(id<NSCopying> (^)(id))firstSelector
+             secondSelector:(id<NSCopying> (^)(id))secondSelector;
 ```
 
 ###Export methods
