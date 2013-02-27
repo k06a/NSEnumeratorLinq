@@ -45,6 +45,10 @@
 - (BOOL)any:(BOOL (^)(id))predicate;
 - (NSInteger)count;
 - (NSInteger)count:(BOOL (^)(id))predicate;
+- (id)max;
+- (id)max:(id (^)(id))func;
+- (id)min;
+- (id)min:(id (^)(id))func;
 
 #pragma mark - Single Object Returners
 

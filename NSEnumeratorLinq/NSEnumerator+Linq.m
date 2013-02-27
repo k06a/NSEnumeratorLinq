@@ -248,6 +248,34 @@
     return [[self where:predicate] count];
 }
 
+- (id)max
+{
+    return [self aggregate:^id(id a, id b) {
+        return ([a compare:b] <= 0) ? a : b;
+    }];
+}
+
+- (id)max:(id (^)(id))func
+{
+    return [self aggregate:^id(id a, id b) {
+        return ([func(a) compare:func(b)] <= 0) ? a : b;
+    }];
+}
+
+- (id)min
+{
+    return [self aggregate:^id(id a, id b) {
+        return ([a compare:b] >= 0) ? a : b;
+    }];
+}
+
+- (id)min:(id (^)(id))func
+{
+    return [self aggregate:^id(id a, id b) {
+        return ([func(a) compare:func(b)] >= 0) ? a : b;
+    }];
+}
+
 #pragma mark - Single Object Returners
 
 - (id)elementAt:(NSInteger)index
