@@ -235,6 +235,16 @@
     return NO;
 }
 
+- (BOOL)contains:(id)object
+{
+    return [self any:PREDICATE(id a, [a isEqual:object])];
+}
+
+- (BOOL)containsObject:(id)object
+{
+    return [self any:PREDICATE(id a, a == object)];
+}
+
 - (NSInteger)count
 {
     NSInteger count = 0;
@@ -356,6 +366,15 @@
         if (object1 || object2)
             return func(object1,object2);
         return nil;
+    }];
+}
+
+- (NSEnumerator *)join:(NSEnumerator *)secondEnumerator
+         firstSelector:(id<NSCopying> (^)(id))firstSelector
+        secondSelector:(id<NSCopying> (^)(id))secondSelector
+{
+    return [self join:secondEnumerator firstSelector:firstSelector secondSelector:secondSelector resultSelector:^id(id a, id b) {
+        return [NSKeyValuePair pairWithKey:a value:b];
     }];
 }
 
