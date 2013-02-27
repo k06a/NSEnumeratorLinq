@@ -197,6 +197,14 @@
 
 #pragma mark - Aggregators
 
+- (id)aggregate:(id (^)(id,id))func
+{
+    id result = nil;
+    for (id object in self)
+        result = result ? func(result, object) : object;
+    return result;
+}
+
 - (BOOL)all
 {
     return [self all:^BOOL(id object) {
@@ -330,6 +338,14 @@
 {
     NSDictionary * lookup = [secondEnumerator toLookup:secondSelector];
     return [self selectMany:FUNC(NSEnumerator *, id a, resultSelector(a, lookup[firstSelector(a)]))];
+}
+
+- (NSEnumerator *)groupJoin:(NSEnumerator *)secondEnumerator
+              firstSelector:(id<NSCopying> (^)(id))firstSelector
+             secondSelector:(id<NSCopying> (^)(id))secondSelector;
+{
+    NSDictionary * lookup = [secondEnumerator toLookup:secondSelector];
+    return [self select:FUNC(NSEnumerator *, id a, [NSKeyValuePair pairWithKey:a value:lookup[firstSelector(a)]])];
 }
 
 #pragma mark - Export methods

@@ -38,6 +38,7 @@
 
 #pragma mark - Aggregators
 
+- (id)aggregate:(id (^)(id,id))func;
 - (BOOL)all;
 - (BOOL)all:(BOOL (^)(id))predicate;
 - (BOOL)any;
@@ -65,6 +66,9 @@
          firstSelector:(id<NSCopying> (^)(id))firstSelector
         secondSelector:(id<NSCopying> (^)(id))secondSelector
         resultSelector:(id (^)(id,id))resultSelector;
+- (NSEnumerator *)groupJoin:(NSEnumerator *)secondEnumerator
+              firstSelector:(id<NSCopying> (^)(id))firstSelector
+             secondSelector:(id<NSCopying> (^)(id))secondSelector;
 
 #pragma mark - Export methods
 
