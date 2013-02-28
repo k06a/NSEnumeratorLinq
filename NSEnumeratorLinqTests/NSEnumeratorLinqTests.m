@@ -6,6 +6,7 @@
 //  Copyright (c) 2013 Anton Bukov. All rights reserved.
 //
 
+#import "NSKeyValuePair.h"
 #import "NSEnumerator+Linq.h"
 #import "NSEnumeratorLinqTests.h"
 
@@ -300,6 +301,24 @@
     STAssertEqualObjects(ans1, [[[arr objectEnumerator] where_i:PREDICATE_2(id a, int i, i%2 == 1)] allObjects], @"Odd indexes");
     STAssertEqualObjects(ans2, [[[arr objectEnumerator] where_i:PREDICATE_2(id a, int i, i>2 && i<=5)] allObjects], @"Indexes in range (2,5]");
     STAssertEqualObjects(ans3, [[[arr objectEnumerator] where_i:PREDICATE_2(id a, int i, i%3 == 2)] allObjects], @"Values x%3==2");
+}
+
+- (void)testGroupBy
+{
+    NSArray * arr = @[@1,@2,@3,@4,@5,@6,@7,@8];
+    
+    NSArray * ans1 = @[@2,@4,@6,@8];
+    NSArray * ans2 = @[@1,@3,@5,@7];
+    
+    NSArray * res = [[[arr objectEnumerator] groupBy:FUNC(id<NSCopying>, id a, @([a intValue] % 2))] allObjects];
+    NSKeyValuePair * res1 = res[0];
+    NSKeyValuePair * res2 = res[1];
+    
+    STAssertEquals((int)[res count], 2, @"Two different keys");
+    STAssertEqualObjects(res1.key, @0, @"First key");
+    STAssertEqualObjects(res2.key, @1, @"Second key");
+    STAssertEqualObjects(res1.value, ans1, @"First value");
+    STAssertEqualObjects(res2.value, ans2, @"Second value");
 }
 
 @end

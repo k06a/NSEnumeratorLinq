@@ -405,7 +405,7 @@
     return [NSSet setWithArray:[self allObjects]];
 }
 
-- (NSDictionary *)toDictionary
+- (NSMutableDictionary *)toDictionary
 {
     NSMutableDictionary * dict = [NSMutableDictionary dictionary];
     for (NSKeyValuePair * pair in self)
@@ -413,12 +413,12 @@
     return dict;
 }
 
-- (NSDictionary *)toDictionary:(id<NSCopying> (^)(id))keySelector
+- (NSMutableDictionary *)toDictionary:(id<NSCopying> (^)(id))keySelector
 {
     return [[self select:TRANSFORM(id a, [NSKeyValuePair pairWithKey:keySelector(a) value:a])] toDictionary];
 }
 
-- (NSDictionary *)toLookup:(id<NSCopying> (^)(id))keySelector
+- (NSMutableDictionary *)toLookup:(id<NSCopying> (^)(id))keySelector
 {
     return [[self groupBy:keySelector] toDictionary];
 }

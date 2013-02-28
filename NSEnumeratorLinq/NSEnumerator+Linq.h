@@ -95,9 +95,9 @@
 
 - (NSArray *)toArray;
 - (NSSet *)toSet;
-- (NSDictionary *)toDictionary;
-- (NSDictionary *)toDictionary:(id<NSCopying> (^)(id))keySelector;
-- (NSDictionary *)toLookup:(id<NSCopying> (^)(id))keySelector;
+- (NSMutableDictionary *)toDictionary;
+- (NSMutableDictionary *)toDictionary:(id<NSCopying> (^)(id))keySelector;
+- (NSMutableDictionary *)toLookup:(id<NSCopying> (^)(id))keySelector;
 
 #pragma - Generation Methods
 
