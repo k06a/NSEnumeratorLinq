@@ -1,9 +1,9 @@
 //
 //  NSEnumerator+Linq.h
-//  NSEnumerator+Linq
+//  NSEnumeratorLinq
 //
-//  Created by Антон Буков on 13.01.13.
-//  Copyright (c) 2013 Happy Nation Project. All rights reserved.
+//  Created by Anton Bukov on 13.01.13.
+//  Copyright (c) 2013 Anton Bukov. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
@@ -18,6 +18,14 @@
 #define ACTION_2(A, B, BODY) FUNC_2(void, A, B, BODY)
 #define TRANSFORM_2(A, B, BODY) FUNC_2(id, A, B, BODY)
 #define PREDICATE_2(A, B, BODY) FUNC_2(BOOL, A, B, BODY)
+
+// NSDictionary+KeyValueEnumerator
+
+@interface NSDictionary (KeyValueEnumerator)
+- (NSEnumerator *)keyValueEnumerator;
+@end
+
+// NSEnumerator+Linq
 
 @interface NSEnumerator (Linq)
 

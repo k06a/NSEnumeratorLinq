@@ -2,8 +2,8 @@
 //  NSKeyValuePair.m
 //  NSEnumeratorLinq
 //
-//  Created by Антон Буков on 15.02.13.
-//  Copyright (c) 2013 Happy Nation Project. All rights reserved.
+//  Created by Anton Bukov on 15.02.13.
+//  Copyright (c) 2013 Anton Bukov. All rights reserved.
 //
 
 #import "NSKeyValuePair.h"

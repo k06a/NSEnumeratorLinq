@@ -1,14 +1,15 @@
 //
 //  NSEnumerator+Linq.m
-//  NSEnumerator+Linq
+//  NSEnumeratorLinq
 //
-//  Created by Антон Буков on 13.01.13.
-//  Copyright (c) 2013 Happy Nation Project. All rights reserved.
+//  Created by Anton Bukov on 13.01.13.
+//  Copyright (c) 2013 Anton Bukov. All rights reserved.
 //
 
 #import "NSEnumerator+Linq.h"
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
+// private class
 
 @interface NSEnumeratorWrapper : NSEnumerator
 @end
@@ -30,9 +31,6 @@
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
 
-@interface NSDictionary (KeyValueEnumerator)
-- (NSEnumerator *)keyValueEnumerator;
-@end
 @implementation NSDictionary (KeyValueEnumerator)
 - (NSEnumerator *)keyValueEnumerator
 {
