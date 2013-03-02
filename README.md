@@ -111,7 +111,6 @@ http://msdn.microsoft.com/en-us/library/system.linq.enumerable_methods.aspx
 + (NSEnumerator *)readLines:(NSString *)path;
 + (NSEnumerator *)readLines:(NSString *)path
                    encoding:(NSStringEncoding)encoding;
-
 ```
 ---
 Written with [Mou](http://mouapp.com) - The missing Markdown editor for web developers

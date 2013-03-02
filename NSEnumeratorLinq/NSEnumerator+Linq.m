@@ -481,9 +481,7 @@
             
             uint8_t buffer[1024];
             NSInteger length = [stream read:buffer maxLength:1024];
-            if (length > 0)
-                [data appendBytes:buffer length:length];
-            else
+            if (length <= 0)
             {
                 if (data.length == 0)
                 {
@@ -497,6 +495,8 @@
                 [data appendBytes:"\n" length:1];
                 break;
             }
+            
+            [data appendBytes:buffer length:length];
         }
         
         char chr1 = ((char *)data.bytes)[pos];
