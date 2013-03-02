@@ -105,5 +105,13 @@ http://msdn.microsoft.com/en-us/library/system.linq.enumerable_methods.aspx
 + (NSEnumerator *)repeat:(id)item count:(int)count;
 + (NSEnumerator *)empty;
 ```
+
+###I/O Methods
+```
++ (NSEnumerator *)readLines:(NSString *)path;
++ (NSEnumerator *)readLines:(NSString *)path
+                   encoding:(NSStringEncoding)encoding;
+
+```
 ---
 Written with [Mou](http://mouapp.com) - The missing Markdown editor for web developers

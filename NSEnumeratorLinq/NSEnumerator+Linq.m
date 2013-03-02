@@ -452,4 +452,62 @@
     }];
 }
 
+#pragma mark - IO Methods
+
++ (NSEnumerator *)readLines:(NSString *)path
+{
+    return [NSEnumerator readLines:path encoding:NSUTF8StringEncoding];
+}
+
++ (NSEnumerator *)readLines:(NSString *)path
+                   encoding:(NSStringEncoding)encoding
+{
+    __block NSInputStream * stream = [NSInputStream inputStreamWithFileAtPath:path];
+    [stream open];
+    if (![stream hasBytesAvailable])
+        return nil;
+    __block NSMutableData * data = [[NSMutableData alloc] init];
+    
+    return [[NSEnumeratorWrapper alloc] initWithEnumarator:nil nextObject:^id(NSEnumerator * en) {
+        int pos;
+        while (YES)
+        {
+            if (data.length > 0)
+            {
+                pos = strcspn(data.bytes, "\r\n"); //[NSCharacterSet newlineCharacterSet]
+                if (pos < data.length)
+                    break;
+            }
+            
+            uint8_t buffer[1024];
+            NSInteger length = [stream read:buffer maxLength:1024];
+            if (length > 0)
+                [data appendBytes:buffer length:length];
+            else
+            {
+                if (data.length == 0)
+                {
+                    [stream close];
+                    stream = nil;
+                    data = nil;
+                    return nil;
+                }
+                
+                pos = data.length;
+                [data appendBytes:"\n" length:1];
+                break;
+            }
+        }
+        
+        char chr1 = ((char *)data.bytes)[pos];
+        char chr2 = (pos + 1 < data.length) ? ((char *)data.bytes)[pos] : 0;
+        BOOL needOneMoreByte = (chr1 == '\r' && chr2 == '\n');
+        
+        [data replaceBytesInRange:NSMakeRange(pos, 1 + (needOneMoreByte?1:0)) withBytes:""];
+        NSString * str = [NSString stringWithCString:data.bytes encoding:encoding];
+        [data replaceBytesInRange:NSMakeRange(0, pos + 1 + (needOneMoreByte?1:0)) withBytes:NULL length:0];
+        return str;
+    }];
+}
+
 @end

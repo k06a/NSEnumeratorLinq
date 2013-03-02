@@ -105,4 +105,10 @@
 + (NSEnumerator *)repeat:(id)item count:(int)count;
 + (NSEnumerator *)empty;
 
+#pragma mark - IO Methods
+
++ (NSEnumerator *)readLines:(NSString *)path;
++ (NSEnumerator *)readLines:(NSString *)path
+                   encoding:(NSStringEncoding)encoding;
+
 @end

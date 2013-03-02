@@ -321,4 +321,17 @@
     STAssertEqualObjects(res2.value, ans2, @"Second value");
 }
 
+- (void)testReadLines
+{
+    
+    NSArray * ans = @[@"a",@"bb",@"ccc",@"dddd",@"eeeee"];
+    
+    NSString * filename = [[[NSString stringWithUTF8String:__FILE__]
+                            stringByDeletingLastPathComponent]
+                           stringByAppendingPathComponent:@"testReadLines.txt"];
+    NSArray * lines = [[NSEnumerator readLines:filename] allObjects];
+    
+    STAssertEqualObjects(ans, lines, @"Compare file lines");
+}
+
 @end
