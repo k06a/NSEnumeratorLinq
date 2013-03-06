@@ -112,5 +112,13 @@ http://msdn.microsoft.com/en-us/library/system.linq.enumerable_methods.aspx
 + (NSEnumerator *)readLines:(NSString *)path
                    encoding:(NSStringEncoding)encoding;
 ```
+
+###NSString Category Methods
+```
+- (NSEnumerator *)enumerateComponentsSeparatedByString:(NSString *)separator
+                                               options:(NSStringCompareOptions)options;
+- (NSEnumerator *)enumerateComponentsSeparatedByString:(NSString *)separator;
+```
+
 ---
 Written with [Mou](http://mouapp.com) - The missing Markdown editor for web developers

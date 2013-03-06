@@ -46,6 +46,36 @@
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
 
+@implementation NSString (Linq)
+
+- (NSEnumerator *)enumerateComponentsSeparatedByString:(NSString *)separator
+{
+    return [self enumerateComponentsSeparatedByString:separator options:0];
+}
+
+- (NSEnumerator *)enumerateComponentsSeparatedByString:(NSString *)separator
+                                               options:(NSStringCompareOptions)options
+{
+    __block NSRange range = NSMakeRange(0, self.length);
+    return [[NSEnumeratorWrapper alloc] initWithEnumarator:nil nextObject:^id(NSEnumerator * enumerator) {
+        NSRange r = [self rangeOfString:separator options:options range:range];
+        if (r.location == NSNotFound)
+        {
+            if (range.location == self.length)
+                return nil;
+            r = NSMakeRange(self.length, 0);
+        }
+        NSRange resultRange = NSMakeRange(range.location, r.location-range.location);
+        range.location = r.location + r.length;
+        range.length = self.length - range.location;
+        return [self substringWithRange:resultRange];
+    }];
+}
+
+@end
+
+////////////////////////////////////////////////////////////////////////////////////////////////
+
 @implementation NSEnumerator (Linq)
 
 - (NSEnumerator *)where:(BOOL (^)(id object))predicate

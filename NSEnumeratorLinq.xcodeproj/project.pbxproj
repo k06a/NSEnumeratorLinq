@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		2502612A16E1FC1100EC7640 /* testReadLines.txt in Resources */ = {isa = PBXBuildFile; fileRef = 2502612916E1FC1100EC7640 /* testReadLines.txt */; };
+		25061EED16E795B80017CEB9 /* NSStringLinqTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 25061EEC16E795B80017CEB9 /* NSStringLinqTests.m */; };
 		25C7FECF16CEB31F00BAE1B6 /* NSKeyValuePair.m in Sources */ = {isa = PBXBuildFile; fileRef = 25C7FECE16CEB31F00BAE1B6 /* NSKeyValuePair.m */; };
 		25EC663F16A2D4050088F64D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 25EC663E16A2D4050088F64D /* Foundation.framework */; };
 		25EC664416A2D4050088F64D /* NSEnumerator+Linq.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 25EC664316A2D4050088F64D /* NSEnumerator+Linq.h */; };
@@ -45,6 +46,8 @@
 
 /* Begin PBXFileReference section */
 		2502612916E1FC1100EC7640 /* testReadLines.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = testReadLines.txt; sourceTree = "<group>"; };
+		25061EEB16E795B80017CEB9 /* NSStringLinqTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSStringLinqTests.h; sourceTree = "<group>"; };
+		25061EEC16E795B80017CEB9 /* NSStringLinqTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSStringLinqTests.m; sourceTree = "<group>"; };
 		25C7FECD16CEB31F00BAE1B6 /* NSKeyValuePair.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSKeyValuePair.h; sourceTree = "<group>"; };
 		25C7FECE16CEB31F00BAE1B6 /* NSKeyValuePair.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSKeyValuePair.m; sourceTree = "<group>"; };
 		25EC663B16A2D4050088F64D /* libNSEnumeratorLinq.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libNSEnumeratorLinq.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -136,6 +139,8 @@
 		25EC665516A2D4060088F64D /* NSEnumeratorLinqTests */ = {
 			isa = PBXGroup;
 			children = (
+				25061EEB16E795B80017CEB9 /* NSStringLinqTests.h */,
+				25061EEC16E795B80017CEB9 /* NSStringLinqTests.m */,
 				25EC665B16A2D4060088F64D /* NSEnumeratorLinqTests.h */,
 				25EC665C16A2D4060088F64D /* NSEnumeratorLinqTests.m */,
 				2502612916E1FC1100EC7640 /* testReadLines.txt */,
@@ -262,6 +267,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				25EC665D16A2D4060088F64D /* NSEnumeratorLinqTests.m in Sources */,
+				25061EED16E795B80017CEB9 /* NSStringLinqTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
