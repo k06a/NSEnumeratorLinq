@@ -42,7 +42,7 @@ http://msdn.microsoft.com/en-us/library/system.linq.enumerable_methods.aspx
 
 ###Aggregators
 ```
-- (id)aggregate:(id (^)(id,id))func;
+- (id)aggregate:(id (^)(id accumulator,id item))func;
 - (BOOL)all;
 - (BOOL)all:(BOOL (^)(id))predicate;
 - (BOOL)any;
