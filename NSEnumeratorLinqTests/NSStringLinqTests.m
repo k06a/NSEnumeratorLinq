@@ -14,11 +14,16 @@
 - (void)testEnumerateComponentsSeparatedByString
 {
     NSString * str = @"Helloabcworldabcxyz";
-    
     NSArray * ans = [str componentsSeparatedByString:@"abc"];
-    
     NSEnumerator * res = [str enumerateComponentsSeparatedByString:@"abc"];
-    
+    STAssertEqualObjects(ans, [res allObjects], @"Components separated by string");
+}
+
+- (void)testEnumerateComponentsSeparatedByString3Empty
+{
+    NSString * str = @"abcabc";
+    NSArray * ans = [str componentsSeparatedByString:@"abc"];
+    NSEnumerator * res = [str enumerateComponentsSeparatedByString:@"abc"];
     STAssertEqualObjects(ans, [res allObjects], @"Components separated by string");
 }
 

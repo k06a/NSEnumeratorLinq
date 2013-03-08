@@ -57,14 +57,24 @@
                                                options:(NSStringCompareOptions)options
 {
     __block NSRange range = NSMakeRange(0, self.length);
+    __block NSInteger lastFound = 0;
     return [[NSEnumeratorWrapper alloc] initWithEnumarator:nil nextObject:^id(NSEnumerator * enumerator) {
         NSRange r = [self rangeOfString:separator options:options range:range];
         if (r.location == NSNotFound)
         {
             if (range.location == self.length)
+            {
+                if (lastFound == self.length)
+                {
+                    lastFound++;
+                    return @"";
+                }
                 return nil;
+            }
             r = NSMakeRange(self.length, 0);
         }
+        else
+            lastFound = r.location + r.length;
         NSRange resultRange = NSMakeRange(range.location, r.location-range.location);
         range.location = r.location + r.length;
         range.length = self.length - range.location;
