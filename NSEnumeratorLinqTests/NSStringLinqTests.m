@@ -27,4 +27,20 @@
     STAssertEqualObjects(ans, [res allObjects], @"Components separated by string");
 }
 
+- (void)testEnumerateComponentsSeparatedByStringNoSeparators
+{
+    NSString * str = @"xyz";
+    NSArray * ans = [str componentsSeparatedByString:@"abc"];
+    NSEnumerator * res = [str enumerateComponentsSeparatedByString:@"abc"];
+    STAssertEqualObjects(ans, [res allObjects], @"Components separated by string");
+}
+
+- (void)testEnumerateComponentsSeparatedByStringEmptyString
+{
+    NSString * str = @"";
+    NSArray * ans = [str componentsSeparatedByString:@"abc"];
+    NSEnumerator * res = [str enumerateComponentsSeparatedByString:@"abc"];
+    STAssertEqualObjects(ans, [res allObjects], @"Components separated by string");
+}
+
 @end
