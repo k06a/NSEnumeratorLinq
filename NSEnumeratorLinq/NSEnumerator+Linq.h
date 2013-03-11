@@ -28,6 +28,8 @@
 // NSString+Linq
 
 @interface NSString (Linq)
++ (id)stringByJoin:(NSEnumerator *)unichars
+     withSeparator:(NSString *)separator;
 - (NSEnumerator *)enumerateCharacters;
 - (NSEnumerator *)enumerateComponentsSeparatedByString:(NSString *)separator;
 - (NSEnumerator *)enumerateComponentsSeparatedByString:(NSString *)separator
@@ -51,6 +53,7 @@
 - (NSEnumerator *)takeWhile:(BOOL (^)(id))predicate;
 
 - (NSEnumerator *)groupBy:(id<NSCopying> (^)(id))keySelector;
+- (NSEnumerator *)splitBy:(id<NSCopying> (^)(id))keySelector;
 - (NSEnumerator *)selectMany:(NSEnumerator * (^)(id))func;
 
 #pragma mark - Aggregators
@@ -116,8 +119,7 @@
 
 #pragma mark - IO Methods
 
++ (NSEnumerator *)readBytes:(NSString *)path;
 + (NSEnumerator *)readLines:(NSString *)path;
-+ (NSEnumerator *)readLines:(NSString *)path
-                   encoding:(NSStringEncoding)encoding;
 
 @end

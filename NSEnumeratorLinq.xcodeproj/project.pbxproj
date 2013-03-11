@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		2502612A16E1FC1100EC7640 /* testReadLines.txt in Resources */ = {isa = PBXBuildFile; fileRef = 2502612916E1FC1100EC7640 /* testReadLines.txt */; };
 		25061EED16E795B80017CEB9 /* NSStringLinqTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 25061EEC16E795B80017CEB9 /* NSStringLinqTests.m */; };
+		2506F99716EDBD1C00A141D8 /* testReadLines2.txt in Resources */ = {isa = PBXBuildFile; fileRef = 2506F99616EDBD1C00A141D8 /* testReadLines2.txt */; };
+		2506F99916EDE3AE00A141D8 /* testReadBytes.txt in Resources */ = {isa = PBXBuildFile; fileRef = 2506F99816EDE3AE00A141D8 /* testReadBytes.txt */; };
 		25C7FECF16CEB31F00BAE1B6 /* NSKeyValuePair.m in Sources */ = {isa = PBXBuildFile; fileRef = 25C7FECE16CEB31F00BAE1B6 /* NSKeyValuePair.m */; };
 		25EC663F16A2D4050088F64D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 25EC663E16A2D4050088F64D /* Foundation.framework */; };
 		25EC664416A2D4050088F64D /* NSEnumerator+Linq.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 25EC664316A2D4050088F64D /* NSEnumerator+Linq.h */; };
@@ -48,6 +50,8 @@
 		2502612916E1FC1100EC7640 /* testReadLines.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = testReadLines.txt; sourceTree = "<group>"; };
 		25061EEB16E795B80017CEB9 /* NSStringLinqTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSStringLinqTests.h; sourceTree = "<group>"; };
 		25061EEC16E795B80017CEB9 /* NSStringLinqTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSStringLinqTests.m; sourceTree = "<group>"; };
+		2506F99616EDBD1C00A141D8 /* testReadLines2.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = testReadLines2.txt; sourceTree = "<group>"; };
+		2506F99816EDE3AE00A141D8 /* testReadBytes.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = testReadBytes.txt; sourceTree = "<group>"; };
 		25C7FECD16CEB31F00BAE1B6 /* NSKeyValuePair.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSKeyValuePair.h; sourceTree = "<group>"; };
 		25C7FECE16CEB31F00BAE1B6 /* NSKeyValuePair.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSKeyValuePair.m; sourceTree = "<group>"; };
 		25EC663B16A2D4050088F64D /* libNSEnumeratorLinq.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libNSEnumeratorLinq.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -87,6 +91,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2506F99516EDBD1000A141D8 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				2506F99816EDE3AE00A141D8 /* testReadBytes.txt */,
+				2502612916E1FC1100EC7640 /* testReadLines.txt */,
+				2506F99616EDBD1C00A141D8 /* testReadLines2.txt */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
 		25EC663016A2D4050088F64D = {
 			isa = PBXGroup;
 			children = (
@@ -139,11 +153,11 @@
 		25EC665516A2D4060088F64D /* NSEnumeratorLinqTests */ = {
 			isa = PBXGroup;
 			children = (
+				2506F99516EDBD1000A141D8 /* Resources */,
 				25061EEB16E795B80017CEB9 /* NSStringLinqTests.h */,
 				25061EEC16E795B80017CEB9 /* NSStringLinqTests.m */,
 				25EC665B16A2D4060088F64D /* NSEnumeratorLinqTests.h */,
 				25EC665C16A2D4060088F64D /* NSEnumeratorLinqTests.m */,
-				2502612916E1FC1100EC7640 /* testReadLines.txt */,
 				25EC665616A2D4060088F64D /* Supporting Files */,
 			);
 			path = NSEnumeratorLinqTests;
@@ -231,6 +245,8 @@
 			files = (
 				25EC665A16A2D4060088F64D /* InfoPlist.strings in Resources */,
 				2502612A16E1FC1100EC7640 /* testReadLines.txt in Resources */,
+				2506F99716EDBD1C00A141D8 /* testReadLines2.txt in Resources */,
+				2506F99916EDE3AE00A141D8 /* testReadBytes.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

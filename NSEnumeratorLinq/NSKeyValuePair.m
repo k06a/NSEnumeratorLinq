@@ -28,4 +28,9 @@
     return self;
 }
 
+- (NSString *)description
+{
+    return [NSString stringWithFormat:@"(key: %@ value: %@)",self.key,self.value,nil];
+}
+
 @end
