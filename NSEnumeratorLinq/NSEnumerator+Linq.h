@@ -28,6 +28,7 @@
 // NSString+Linq
 
 @interface NSString (Linq)
+- (NSEnumerator *)enumerateCharacters;
 - (NSEnumerator *)enumerateComponentsSeparatedByString:(NSString *)separator;
 - (NSEnumerator *)enumerateComponentsSeparatedByString:(NSString *)separator
                                                options:(NSStringCompareOptions)options;

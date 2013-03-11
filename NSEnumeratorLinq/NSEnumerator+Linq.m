@@ -48,6 +48,17 @@
 
 @implementation NSString (Linq)
 
+- (NSEnumerator *)enumerateCharacters
+{
+    __block int index = 0;
+    return [[NSEnumeratorWrapper alloc] initWithEnumarator:nil nextObject:^id(NSEnumerator * en) {
+        if (index == self.length)
+            return nil;
+        unichar ch = [self characterAtIndex:index++];
+        return [NSNumber numberWithUnsignedChar:ch];
+    }];
+}
+
 - (NSEnumerator *)enumerateComponentsSeparatedByString:(NSString *)separator
 {
     return [self enumerateComponentsSeparatedByString:separator options:0];

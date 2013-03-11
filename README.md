@@ -115,6 +115,7 @@ http://msdn.microsoft.com/en-us/library/system.linq.enumerable_methods.aspx
 
 ###NSString Category Methods
 ```
+- (NSEnumerator *)enumerateCharacters;
 - (NSEnumerator *)enumerateComponentsSeparatedByString:(NSString *)separator
                                                options:(NSStringCompareOptions)options;
 - (NSEnumerator *)enumerateComponentsSeparatedByString:(NSString *)separator;
