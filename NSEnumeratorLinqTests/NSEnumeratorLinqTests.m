@@ -374,7 +374,7 @@
 
 - (void)testReadLines2
 {
-    NSArray * ans = @[@"a",@"bb",@"ccc",@"dddd",@"eeeee",@""];
+    NSArray * ans = @[@"",@"a",@"bb",@"",@"ccc",@"",@"dddd",@"eeeee",@""];
     
     NSString * filename = [[[NSString stringWithUTF8String:__FILE__]
                             stringByDeletingLastPathComponent]

@@ -596,7 +596,7 @@
     __block uint8_t prevCh = 0;
     __block int lineIndex = 0;
     
-    return [[[[NSEnumerator readBytes:path] where:^BOOL(NSNumber * num) {
+    NSEnumerator * en = [[[NSEnumerator readBytes:path] where:^BOOL(NSNumber * num) {
         uint8_t ch = [num unsignedCharValue];
         BOOL ret = !(prevCh == '\r' && ch == '\n');
         prevCh = ch;
@@ -606,7 +606,18 @@
         if (ch == '\r' || ch == '\n')
             lineIndex++;
         return @(lineIndex);
-    }] select:^id(NSKeyValuePair * pair) {
+    }];
+    
+    NSKeyValuePair * firstValue = [en nextObject];
+    if (firstValue == nil)
+        return en;
+    
+    if ([firstValue.key isEqualToNumber:@0])
+        en = [[@[firstValue] objectEnumerator] concat:en];
+    else
+        en = [[@[[NSKeyValuePair pairWithKey:@0 value:@[]],firstValue] objectEnumerator] concat:en];
+    
+    return [en select:^id(NSKeyValuePair * pair) {
         NSString * str = [NSString stringByJoin:pair.value withSeparator:nil];
         if (str.length == 0)
             return @"";
