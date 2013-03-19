@@ -42,8 +42,8 @@
 
 - (NSEnumerator *)where:(BOOL (^)(id))predicate;
 - (NSEnumerator *)where_i:(BOOL (^)(id,int))predicate;
-- (NSEnumerator *)select:(id (^)(id))predicate;
-- (NSEnumerator *)select_i:(id (^)(id,int))predicate;
+- (NSEnumerator *)select:(id (^)(id))func;
+- (NSEnumerator *)select_i:(id (^)(id,int))func;
 - (NSEnumerator *)distinct;
 - (NSEnumerator *)distinct:(id<NSCopying> (^)(id))keySelector;
 
@@ -55,6 +55,13 @@
 - (NSEnumerator *)groupBy:(id<NSCopying> (^)(id))keySelector;
 - (NSEnumerator *)splitBy:(id<NSCopying> (^)(id))keySelector;
 - (NSEnumerator *)selectMany:(NSEnumerator * (^)(id))func;
+
+- (NSEnumerator *)orderBy:(id (^)(id))func
+               comparator:(NSComparisonResult(^)(id obj1, id obj2))objectComparator;
+- (NSEnumerator *)orderByDescending:(id (^)(id))func
+                         comparator:(NSComparisonResult(^)(id obj1, id obj2))objectComparator;
+- (NSEnumerator *)orderBy:(id (^)(id))func;
+- (NSEnumerator *)orderByDescending:(id (^)(id))func;
 
 #pragma mark - Aggregators
 

@@ -302,6 +302,36 @@
     }];
 }
 
+- (NSEnumerator *)orderBy:(id (^)(id))func
+               comparator:(NSComparisonResult(^)(id obj1, id obj2))objectComparator
+{
+    return [[[self allObjects] sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+        return objectComparator(func(obj1), func(obj2));
+    }] objectEnumerator];
+}
+
+- (NSEnumerator *)orderByDescending:(id (^)(id))func
+                         comparator:(NSComparisonResult(^)(id obj1, id obj2))objectComparator
+{
+    return [[[self allObjects] sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+        return objectComparator(func(obj2), func(obj1));
+    }] objectEnumerator];
+}
+
+- (NSEnumerator *)orderBy:(id (^)(id))func
+{
+    return [self orderBy:func comparator:^NSComparisonResult(id obj1, id obj2){
+        return [func(obj1) compare:func(obj2)];
+    }];
+}
+
+- (NSEnumerator *)orderByDescending:(id (^)(id))func
+{
+    return [self orderByDescending:func comparator:^NSComparisonResult(id obj1, id obj2){
+        return [func(obj2) compare:func(obj1)];
+    }];
+}
+
 #pragma mark - Aggregators
 
 - (id)aggregate:(id (^)(id accumulator,id item))func
