@@ -156,6 +156,39 @@
     }];
 }
 
+- (NSEnumerator *)select_parallel:(id (^)(id))func
+{
+    return [self select_parallel:func priority:DISPATCH_QUEUE_PRIORITY_DEFAULT];
+}
+
+- (NSEnumerator *)select_parallel:(id (^)(id))func priority:(long)priority
+{
+    __block NSMutableArray * results = [[self allObjects] mutableCopy];
+    __block NSMutableArray * lockers = [[[[NSEnumerator repeat:@0 count:results.count]
+                                          select:FUNC(id, id a, [[NSLock alloc] init])]
+                                         allObjects] mutableCopy];
+    
+    for (int i = 0; i < results.count; i++) {
+        dispatch_async(dispatch_get_global_queue(priority, 0), ^{
+            [lockers[i] lock];
+            results[i] = func(results[i]);
+            [lockers[i] unlock];
+        });
+    }
+    
+    __block int index = 0;
+    return [[NSEnumeratorWrapper alloc] initWithEnumarator:nil nextObject:^id(NSEnumerator * en) {
+        if (index == results.count)
+        {
+            results = nil;
+            lockers = nil;
+            return nil;
+        }
+        [lockers[index] lock];
+        return results[index++];
+    }];
+}
+
 - (NSEnumerator *)distinct
 {
     return [self distinct:^id(id object) {

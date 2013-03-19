@@ -28,6 +28,9 @@ http://msdn.microsoft.com/en-us/library/system.linq.enumerable_methods.aspx
 - (NSEnumerator *)where_i:(BOOL (^)(id,int))predicate;
 - (NSEnumerator *)select:(id (^)(id))predicate;
 - (NSEnumerator *)select_i:(id (^)(id,int))predicate;
+- (NSEnumerator *)select_parallel:(id (^)(id))func;
+- (NSEnumerator *)select_parallel:(id (^)(id))func
+                         priority:(long)priority;
 - (NSEnumerator *)distinct;
 - (NSEnumerator *)distinct:(id<NSCopying> (^)(id))func;
 

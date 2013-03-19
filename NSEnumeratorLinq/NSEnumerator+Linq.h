@@ -44,6 +44,8 @@
 - (NSEnumerator *)where_i:(BOOL (^)(id,int))predicate;
 - (NSEnumerator *)select:(id (^)(id))func;
 - (NSEnumerator *)select_i:(id (^)(id,int))func;
+- (NSEnumerator *)select_parallel:(id (^)(id))func;
+- (NSEnumerator *)select_parallel:(id (^)(id))func priority:(long)priority;
 - (NSEnumerator *)distinct;
 - (NSEnumerator *)distinct:(id<NSCopying> (^)(id))keySelector;
 
