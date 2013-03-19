@@ -37,6 +37,7 @@ http://msdn.microsoft.com/en-us/library/system.linq.enumerable_methods.aspx
 - (NSEnumerator *)takeWhile:(BOOL (^)(id))predicate;
 
 - (NSEnumerator *)groupBy:(id<NSCopying> (^)(id))keySelector;
+- (NSEnumerator *)splitBy:(id<NSCopying> (^)(id))keySelector;
 - (NSEnumerator *)selectMany:(NSEnumerator * (^)(id))func;
 
 - (NSEnumerator *)orderBy:(id (^)(id))func
@@ -115,13 +116,14 @@ http://msdn.microsoft.com/en-us/library/system.linq.enumerable_methods.aspx
 
 ###I/O Methods
 ```
++ (NSEnumerator *)readBytes:(NSString *)path;
 + (NSEnumerator *)readLines:(NSString *)path;
-+ (NSEnumerator *)readLines:(NSString *)path
-                   encoding:(NSStringEncoding)encoding;
 ```
 
 ###NSString Category Methods
 ```
++ (id)stringByJoin:(NSEnumerator *)unichars
+     withSeparator:(NSString *)separator;
 - (NSEnumerator *)enumerateCharacters;
 - (NSEnumerator *)enumerateComponentsSeparatedByString:(NSString *)separator
                                                options:(NSStringCompareOptions)options;

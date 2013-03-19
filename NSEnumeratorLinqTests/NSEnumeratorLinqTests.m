@@ -321,14 +321,64 @@
     STAssertEqualObjects(res2.value, ans2, @"Second value");
 }
 
+- (void)testSplitBy
+{
+    NSArray * arr = @[@"a1",@"a2",@"a3",@"b1",@"b2",@"c1",@"d1",@"d2"];
+    
+    NSArray * ans1 = @[@"a1",@"a2",@"a3"];
+    NSArray * ans2 = @[@"b1",@"b2"];
+    NSArray * ans3 = @[@"c1"];
+    NSArray * ans4 = @[@"d1",@"d2"];
+    
+    NSArray * res = [[[arr objectEnumerator] splitBy:FUNC(id<NSCopying>, NSString * a, @([a characterAtIndex:0]))] allObjects];
+    
+    NSKeyValuePair * res1 = res[0];
+    NSKeyValuePair * res2 = res[1];
+    NSKeyValuePair * res3 = res[2];
+    NSKeyValuePair * res4 = res[3];
+    
+    STAssertEquals((int)[res count], 4, @"Two different keys");
+    STAssertEqualObjects(res1.key, @('a'), @"First key");
+    STAssertEqualObjects(res2.key, @('b'), @"Second key");
+    STAssertEqualObjects(res3.key, @('c'), @"Third key");
+    STAssertEqualObjects(res4.key, @('d'), @"Fourth key");
+    STAssertEqualObjects(res1.value, ans1, @"First value");
+    STAssertEqualObjects(res2.value, ans2, @"Second value");
+    STAssertEqualObjects(res3.value, ans3, @"Third value");
+    STAssertEqualObjects(res4.value, ans4, @"Fourth value");
+}
+
+- (void)testReadBytes
+{
+    NSArray * ans = @[@('a'),@('b'),@('c')];
+    
+    NSString * filename = [[[NSString stringWithUTF8String:__FILE__]
+                            stringByDeletingLastPathComponent]
+                           stringByAppendingPathComponent:@"testReadBytes.txt"];
+    NSArray * lines = [[NSEnumerator readBytes:filename] allObjects];
+    
+    STAssertEqualObjects(ans, lines, @"Compare file lines");
+}
+
 - (void)testReadLines
 {
-    
     NSArray * ans = @[@"a",@"bb",@"ccc",@"dddd",@"eeeee"];
     
     NSString * filename = [[[NSString stringWithUTF8String:__FILE__]
                             stringByDeletingLastPathComponent]
                            stringByAppendingPathComponent:@"testReadLines.txt"];
+    NSArray * lines = [[NSEnumerator readLines:filename] allObjects];
+    
+    STAssertEqualObjects(ans, lines, @"Compare file lines");
+}
+
+- (void)testReadLines2
+{
+    NSArray * ans = @[@"",@"a",@"bb",@"",@"ccc",@"",@"dddd",@"eeeee",@""];
+    
+    NSString * filename = [[[NSString stringWithUTF8String:__FILE__]
+                            stringByDeletingLastPathComponent]
+                           stringByAppendingPathComponent:@"testReadLines2.txt"];
     NSArray * lines = [[NSEnumerator readLines:filename] allObjects];
     
     STAssertEqualObjects(ans, lines, @"Compare file lines");

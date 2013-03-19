@@ -48,6 +48,19 @@
 
 @implementation NSString (Linq)
 
++ (id)stringByJoin:(NSEnumerator *)unichars
+     withSeparator:(NSString *)separator
+{
+    NSMutableString * str = [NSMutableString string];
+    for (NSNumber * num in unichars)
+    {
+        if (separator && str.length > 0)
+            [str appendString:separator];
+        [str appendFormat:@"%c",[num unsignedCharValue],nil];
+    }
+    return str;
+}
+
 - (NSEnumerator *)enumerateCharacters
 {
     __block int index = 0;
@@ -230,6 +243,51 @@
     return [dict keyValueEnumerator];
 }
 
+- (NSEnumerator *)splitBy:(id<NSCopying> (^)(id))keySelector
+{
+    __block id currentItem = nil;
+    __block id<NSCopying> currentKey = nil;
+    
+    return [[NSEnumeratorWrapper alloc] initWithEnumarator:self nextObject:^id(NSEnumerator * en) {
+        if (currentItem == nil)
+        {
+            currentItem = [en nextObject];
+            if (currentItem == nil)
+                return nil;
+            currentKey = keySelector(currentItem);
+        }
+        
+        return [NSKeyValuePair pairWithKey:currentKey value:[[[NSEnumeratorWrapper alloc] initWithEnumarator:en nextObject:^id(NSEnumerator * en)
+        {
+            id item;
+            id<NSCopying> key;
+            
+            if (currentItem)
+            {
+                item = currentItem;
+                key = currentKey;
+                currentItem = nil;
+            }
+            else
+            {
+                item = [en nextObject];
+                if (item == nil)
+                    return nil;
+                key = keySelector(item);
+                if (!currentKey)
+                    currentKey = key;
+            }
+            
+            if ([(id)key isEqual:currentKey])
+                return item;
+            
+            currentItem = item;
+            currentKey = key;
+            return nil;
+        }] allObjects]];
+    }];
+}
+
 - (NSEnumerator *)selectMany:(NSEnumerator * (^)(id))func
 {
     __block NSEnumerator * item = nil;
@@ -241,6 +299,36 @@
             object = [item nextObject];
         }
         return object;
+    }];
+}
+
+- (NSEnumerator *)orderBy:(id (^)(id))func
+               comparator:(NSComparisonResult(^)(id obj1, id obj2))objectComparator
+{
+    return [[[self allObjects] sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+        return objectComparator(func(obj1), func(obj2));
+    }] objectEnumerator];
+}
+
+- (NSEnumerator *)orderByDescending:(id (^)(id))func
+                         comparator:(NSComparisonResult(^)(id obj1, id obj2))objectComparator
+{
+    return [[[self allObjects] sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+        return objectComparator(func(obj2), func(obj1));
+    }] objectEnumerator];
+}
+
+- (NSEnumerator *)orderBy:(id (^)(id))func
+{
+    return [self orderBy:func comparator:^NSComparisonResult(id obj1, id obj2){
+        return [func(obj1) compare:func(obj2)];
+    }];
+}
+
+- (NSEnumerator *)orderByDescending:(id (^)(id))func
+{
+    return [self orderByDescending:func comparator:^NSComparisonResult(id obj1, id obj2){
+        return [func(obj2) compare:func(obj1)];
     }];
 }
 
@@ -310,28 +398,28 @@
 - (id)max
 {
     return [self aggregate:^id(id a, id b) {
-        return ([a compare:b] <= 0) ? a : b;
+        return ([a compare:b] >= 0) ? a : b;
     }];
 }
 
 - (id)max:(id (^)(id))func
 {
     return [self aggregate:^id(id a, id b) {
-        return ([func(a) compare:func(b)] <= 0) ? a : b;
+        return ([func(a) compare:func(b)] >= 0) ? a : b;
     }];
 }
 
 - (id)min
 {
     return [self aggregate:^id(id a, id b) {
-        return ([a compare:b] >= 0) ? a : b;
+        return ([a compare:b] <= 0) ? a : b;
     }];
 }
 
 - (id)min:(id (^)(id))func
 {
     return [self aggregate:^id(id a, id b) {
-        return ([func(a) compare:func(b)] >= 0) ? a : b;
+        return ([func(a) compare:func(b)] <= 0) ? a : b;
     }];
 }
 
@@ -505,58 +593,67 @@
 
 #pragma mark - IO Methods
 
-+ (NSEnumerator *)readLines:(NSString *)path
-{
-    return [NSEnumerator readLines:path encoding:NSUTF8StringEncoding];
-}
-
-+ (NSEnumerator *)readLines:(NSString *)path
-                   encoding:(NSStringEncoding)encoding
++ (NSEnumerator *)readBytes:(NSString *)path
 {
     __block NSInputStream * stream = [NSInputStream inputStreamWithFileAtPath:path];
     [stream open];
     if (![stream hasBytesAvailable])
         return nil;
-    __block NSMutableData * data = [[NSMutableData alloc] init];
-    
+
+    __block int index = 0;
+    __block int size = 0;
+    __block uint8_t * buffer = (uint8_t *)malloc(1024);
     return [[NSEnumeratorWrapper alloc] initWithEnumarator:nil nextObject:^id(NSEnumerator * en) {
-        int pos;
-        while (YES)
+        if (stream == nil)
+            return nil;
+        if (index < size)
+            return @(buffer[index++]);
+        size = [stream read:buffer maxLength:1024];
+        if (size <= 0)
         {
-            if (data.length > 0)
-            {
-                pos = strcspn(data.bytes, "\r\n"); //[NSCharacterSet newlineCharacterSet]
-                if (pos < data.length)
-                    break;
-            }
-            
-            uint8_t buffer[1024];
-            NSInteger length = [stream read:buffer maxLength:1024];
-            if (length <= 0)
-            {
-                if (data.length == 0)
-                {
-                    [stream close];
-                    stream = nil;
-                    data = nil;
-                    return nil;
-                }
-                
-                pos = data.length;
-                [data appendBytes:"\n" length:1];
-                break;
-            }
-            
-            [data appendBytes:buffer length:length];
+            [stream close];
+            stream = nil;
+            buffer = nil;
+            return nil;
         }
-        
-        char chr1 = ((char *)data.bytes)[pos];
-        char chr2 = (pos + 1 < data.length) ? ((char *)data.bytes)[pos] : 0;
-        BOOL needOneMoreByte = (chr1 == '\r' && chr2 == '\n');
-        
-        [data replaceBytesInRange:NSMakeRange(pos, 1 + (needOneMoreByte?1:0)) withBytes:""];
-        NSString * str = [NSString stringWithCString:data.bytes encoding:encoding];
-        [data replaceBytesInRange:NSMakeRange(0, pos + 1 + (needOneMoreByte?1:0)) withBytes:NULL length:0];
+        index = 0;
+        return @(buffer[index++]);
+    }];
+}
+
++ (NSEnumerator *)readLines:(NSString *)path
+{
+    __block uint8_t prevCh = 0;
+    __block int lineIndex = 0;
+    
+    NSEnumerator * en = [[[NSEnumerator readBytes:path] where:^BOOL(NSNumber * num) {
+        uint8_t ch = [num unsignedCharValue];
+        BOOL ret = !(prevCh == '\r' && ch == '\n');
+        prevCh = ch;
+        return ret;
+    }] splitBy:^id<NSCopying>(NSNumber * num) {
+        uint8_t ch = [num unsignedCharValue];
+        if (ch == '\r' || ch == '\n')
+            lineIndex++;
+        return @(lineIndex);
+    }];
+    
+    NSKeyValuePair * firstValue = [en nextObject];
+    if (firstValue == nil)
+        return en;
+    
+    if ([firstValue.key isEqualToNumber:@0])
+        en = [[@[firstValue] objectEnumerator] concat:en];
+    else
+        en = [[@[[NSKeyValuePair pairWithKey:@0 value:@[]],firstValue] objectEnumerator] concat:en];
+    
+    return [en select:^id(NSKeyValuePair * pair) {
+        NSString * str = [NSString stringByJoin:pair.value withSeparator:nil];
+        if (str.length == 0)
+            return @"";
+        unichar ch = [str characterAtIndex:0];
+        if (ch == '\r' || ch == '\n')
+            return [str substringFromIndex:1];
         return str;
     }];
 }

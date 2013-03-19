@@ -16,4 +16,6 @@
 + (id)pairWithKey:(id)key value:(id)value;
 - (id)initWithKey:(id)key value:(id)value;
 
+- (NSString *)description;
+
 @end
