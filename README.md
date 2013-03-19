@@ -38,6 +38,13 @@ http://msdn.microsoft.com/en-us/library/system.linq.enumerable_methods.aspx
 
 - (NSEnumerator *)groupBy:(id<NSCopying> (^)(id))keySelector;
 - (NSEnumerator *)selectMany:(NSEnumerator * (^)(id))func;
+
+- (NSEnumerator *)orderBy:(id (^)(id))func
+               comparator:(NSComparisonResult(^)(id obj1, id obj2))objectComparator;
+- (NSEnumerator *)orderByDescending:(id (^)(id))func
+                         comparator:(NSComparisonResult(^)(id obj1, id obj2))objectComparator;
+- (NSEnumerator *)orderBy:(id (^)(id))func;
+- (NSEnumerator *)orderByDescending:(id (^)(id))func;
 ```
 
 ###Aggregators
