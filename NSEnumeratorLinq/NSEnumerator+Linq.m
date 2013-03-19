@@ -169,8 +169,8 @@
                                          allObjects] mutableCopy];
     
     for (int i = 0; i < results.count; i++) {
+        [lockers[i] lock];
         dispatch_async(dispatch_get_global_queue(priority, 0), ^{
-            [lockers[i] lock];
             results[i] = func(results[i]);
             [lockers[i] unlock];
         });
@@ -611,7 +611,7 @@
 {
     __block int index = 0;
     return [[NSEnumeratorWrapper alloc] initWithEnumarator:nil nextObject:^id(NSEnumerator * enumerator) {
-        if (index < count)
+        if (index++ < count)
             return object;
         return nil;
     }];
