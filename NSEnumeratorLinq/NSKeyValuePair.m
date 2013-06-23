@@ -13,6 +13,16 @@
 @synthesize key = _key;
 @synthesize value = _value;
 
+- (id)kvKey
+{
+    return _key;
+}
+
+- (id)kvValue
+{
+    return _value;
+}
+
 + (id)pairWithKey:(id)key value:(id)value
 {
     return [[NSKeyValuePair alloc] initWithKey:key value:value];
@@ -28,9 +38,18 @@
     return self;
 }
 
+- (NSString *)debugDescription
+{
+    return [NSString stringWithFormat:@"(key: %@ value: %@)",
+            [self.key debugDescription],
+            [self.value debugDescription],nil];
+}
+
 - (NSString *)description
 {
-    return [NSString stringWithFormat:@"(key: %@ value: %@)",self.key,self.value,nil];
+    return [NSString stringWithFormat:@"(key: %@ value: %@)",
+            [self.key description],
+            [self.value description],nil];
 }
 
 @end

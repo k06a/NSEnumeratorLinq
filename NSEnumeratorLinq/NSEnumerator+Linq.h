@@ -92,6 +92,7 @@
 #pragma mark - Set Methods
 
 - (NSEnumerator *)concat:(NSEnumerator *)secondEnumerator;
+- (NSEnumerator *)concatOne:(id)one;
 - (NSEnumerator *)union:(NSEnumerator *)secondEnumerator;
 - (NSEnumerator *)intersect:(NSEnumerator *)secondEnumerator;
 - (NSEnumerator *)except:(NSEnumerator *)secondEnumerator;

@@ -13,6 +13,9 @@
 @property (nonatomic) id key;
 @property (nonatomic) id value;
 
+- (id)kvKey;
+- (id)kvValue;
+
 + (id)pairWithKey:(id)key value:(id)value;
 - (id)initWithKey:(id)key value:(id)value;
 

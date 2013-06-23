@@ -354,7 +354,7 @@
 - (NSEnumerator *)orderBy:(id (^)(id))func
 {
     return [self orderBy:func comparator:^NSComparisonResult(id obj1, id obj2){
-        return [func(obj1) compare:func(obj2)];
+        return [obj1 compare:obj2];
     }];
 }
 
@@ -499,6 +499,12 @@
         if (object) return object;
         return [secondEnumerator nextObject];
     }];
+}
+
+
+- (NSEnumerator *)concatOne:(id)one
+{
+    return [self concat:@[one].objectEnumerator];
 }
 
 - (NSEnumerator *)union:(NSEnumerator *)secondEnumerator
