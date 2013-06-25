@@ -80,6 +80,7 @@ http://msdn.microsoft.com/en-us/library/system.linq.enumerable_methods.aspx
 ###Set Methods
 ```
 - (NSEnumerator *)concat:(NSEnumerator *)secondEnumerator;
+- (NSEnumerator *)concatOne:(id)one;
 - (NSEnumerator *)union:(NSEnumerator *)secondEnumerator;
 - (NSEnumerator *)intersect:(NSEnumerator *)secondEnumerator;
 - (NSEnumerator *)except:(NSEnumerator *)secondEnumerator;
