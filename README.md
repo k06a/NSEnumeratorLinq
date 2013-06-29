@@ -67,6 +67,9 @@ http://msdn.microsoft.com/en-us/library/system.linq.enumerable_methods.aspx
 - (id)max:(id (^)(id))func;
 - (id)min;
 - (id)min:(id (^)(id))func;
+- (BOOL)sequenceEqual:(NSEnumerator *)other;
+- (BOOL)sequenceEqual:(NSEnumerator *) other
+       withComparator:(BOOL(^)(id obj1, id obj2))equalityComparator;
 ```
 
 ###Single Object Returners
