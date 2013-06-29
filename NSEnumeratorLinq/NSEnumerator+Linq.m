@@ -365,6 +365,18 @@
     }];
 }
 
+- (NSEnumerator *)ofType:(Class) type
+{
+    return [[NSEnumeratorWrapper alloc] initWithEnumarator:self nextObject:^id(NSEnumerator * enumerator) {
+        id result;
+        while (result = [enumerator nextObject])
+            if ([[result class] isSubclassOfClass:type])
+                return result;
+        return nil;
+    }];
+}
+
+
 #pragma mark - Aggregators
 
 - (id)aggregate:(id (^)(id accumulator,id item))func
