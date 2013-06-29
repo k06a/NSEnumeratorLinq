@@ -367,12 +367,8 @@
 
 - (NSEnumerator *)ofType:(Class) type
 {
-    return [[NSEnumeratorWrapper alloc] initWithEnumarator:self nextObject:^id(NSEnumerator * enumerator) {
-        id result;
-        while (result = [enumerator nextObject])
-            if ([[result class] isSubclassOfClass:type])
-                return result;
-        return nil;
+    return [self where:^BOOL(id item) {
+        return [item isKindOfClass:type];
     }];
 }
 
