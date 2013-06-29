@@ -348,6 +348,26 @@
     STAssertEqualObjects(res4.value, ans4, @"Fourth value");
 }
 
+-(void)testOfType
+{
+    NSArray *items = @[@1,@2,@"First String",@"Second String",@[@"A string in an array"],@3];
+    NSArray *arrays = [[[items objectEnumerator] ofType:[NSArray class]] toArray];
+    NSArray *strings = [[[items objectEnumerator] ofType:[NSString class]] toArray];
+    NSArray *numbers = [[[items objectEnumerator] ofType:[NSNumber class]] toArray];
+
+    STAssertEquals((int)[arrays count], 1, @"Incorrect array count");
+    STAssertEqualObjects(arrays[0][0],@"A string in an array",@"First array value");
+
+    STAssertEquals((int)[strings count], 2, @"Incorrect strings count");
+    STAssertEqualObjects(strings[0],@"First String",@"First string value");
+    STAssertEqualObjects(strings[1],@"Second String",@"Second string value");
+
+    STAssertEquals((int)[numbers count], 3, @"Incorrect number count");
+    STAssertEqualObjects(numbers[0], @1, @"First number");
+    STAssertEqualObjects(numbers[1], @2, @"Second number");
+    STAssertEqualObjects(numbers[2], @3, @"Third number");
+}
+
 - (void)testReadBytes
 {
     NSArray * ans = @[@('a'),@('b'),@('c')];
@@ -382,6 +402,37 @@
     NSArray * lines = [[NSEnumerator readLines:filename] allObjects];
     
     STAssertEqualObjects(ans, lines, @"Compare file lines");
+}
+
+-(void)testSequenceEqual
+{
+    NSArray *arr1 = @[@0, @1, @2, @"A String"];
+    NSArray *arr2 = @[@0, @1, @2, @"A String"];
+    NSArray *arr3 = @[@0, @1, @2, @"A String", @"An extra item"];
+    NSArray *arr4 = @[@0, @1];
+
+    BOOL arr1ToArr2 = [[arr1 objectEnumerator] sequenceEqual:[arr2 objectEnumerator]];
+    BOOL arr1ToArr3 = [[arr1 objectEnumerator] sequenceEqual:[arr3 objectEnumerator]];
+    BOOL arr1ToArr4 = [[arr1 objectEnumerator] sequenceEqual:[arr4 objectEnumerator]];
+
+    STAssertTrue(arr1ToArr2, @"Comparison of arr1 to equal arr2");
+    STAssertFalse(arr1ToArr3, @"Comparison of arr1 to arr3 which is longer than arr1");
+    STAssertFalse(arr1ToArr4, @"Comparison of arr1 to arr4 which is shorter than arr1");
+}
+
+-(void)testSequenceEqualWithComparator
+{
+    NSArray *arr1 = @[@0,@1,@2,@3,@4,@5];
+    NSArray *arr2 = @[@0,@1,@2,@3,@4,@5];
+
+    BOOL alwaysYes = [[arr1 objectEnumerator] sequenceEqual:[arr2 objectEnumerator]
+                                             withComparator:^BOOL(id obj1, id obj2) { return YES;}];
+
+    BOOL alwaysNo = [[arr1 objectEnumerator] sequenceEqual:[arr2 objectEnumerator]
+                                            withComparator:^BOOL(id obj1, id obj2) { return NO; }];
+
+    STAssertTrue(alwaysYes, @"Comparator is always YES");
+    STAssertFalse(alwaysNo, @"Comparator is always NO");
 }
 
 @end

@@ -48,6 +48,7 @@
 - (NSEnumerator *)select_parallel:(id (^)(id))func priority:(long)priority;
 - (NSEnumerator *)distinct;
 - (NSEnumerator *)distinct:(id<NSCopying> (^)(id))keySelector;
+- (NSEnumerator *)ofType:(Class) type;
 
 - (NSEnumerator *)skip:(NSInteger)count;
 - (NSEnumerator *)skipWhile:(BOOL (^)(id))predicate;
@@ -80,6 +81,11 @@
 - (id)max:(id (^)(id))func;
 - (id)min;
 - (id)min:(id (^)(id))func;
+
+- (BOOL)sequenceEqual:(NSEnumerator *)other;
+- (BOOL)sequenceEqual:(NSEnumerator *) other
+       withComparator:(BOOL(^)(id obj1, id obj2))equalityComparator;
+
 
 #pragma mark - Single Object Returners
 

@@ -365,6 +365,18 @@
     }];
 }
 
+- (NSEnumerator *)ofType:(Class) type
+{
+    return [[NSEnumeratorWrapper alloc] initWithEnumarator:self nextObject:^id(NSEnumerator * enumerator) {
+        id result;
+        while (result = [enumerator nextObject])
+            if ([[result class] isSubclassOfClass:type])
+                return result;
+        return nil;
+    }];
+}
+
+
 #pragma mark - Aggregators
 
 - (id)aggregate:(id (^)(id accumulator,id item))func
@@ -454,6 +466,26 @@
     return [self aggregate:^id(id a, id b) {
         return ([func(a) compare:func(b)] <= 0) ? a : b;
     }];
+}
+
+- (BOOL) sequenceEqual:(NSEnumerator *)other
+{
+    return [self sequenceEqual:other withComparator:^BOOL(id obj1, id obj2) {
+        return [obj1 isEqual:obj2];
+    }];
+}
+
+- (BOOL)sequenceEqual:(NSEnumerator *) other
+       withComparator:(BOOL(^)(id obj1, id obj2))equalityComparator
+{
+    id object;
+    while (object = [self nextObject])
+    {
+        id otherObject = [other nextObject];
+        if (!equalityComparator (object, otherObject))
+            return NO;
+    }
+    return ![other nextObject];
 }
 
 #pragma mark - Single Object Returners
