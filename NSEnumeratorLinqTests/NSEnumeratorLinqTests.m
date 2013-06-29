@@ -404,4 +404,35 @@
     STAssertEqualObjects(ans, lines, @"Compare file lines");
 }
 
+-(void)testSequenceEqual
+{
+    NSArray *arr1 = @[@0, @1, @2, @"A String"];
+    NSArray *arr2 = @[@0, @1, @2, @"A String"];
+    NSArray *arr3 = @[@0, @1, @2, @"A String", @"An extra item"];
+    NSArray *arr4 = @[@0, @1];
+
+    BOOL arr1ToArr2 = [[arr1 objectEnumerator] sequenceEqual:[arr2 objectEnumerator]];
+    BOOL arr1ToArr3 = [[arr1 objectEnumerator] sequenceEqual:[arr3 objectEnumerator]];
+    BOOL arr1ToArr4 = [[arr1 objectEnumerator] sequenceEqual:[arr4 objectEnumerator]];
+
+    STAssertTrue(arr1ToArr2, @"Comparison of arr1 to equal arr2");
+    STAssertFalse(arr1ToArr3, @"Comparison of arr1 to arr3 which is longer than arr1");
+    STAssertFalse(arr1ToArr4, @"Comparison of arr1 to arr4 which is shorter than arr1");
+}
+
+-(void)testSequenceEqualWithComparator
+{
+    NSArray *arr1 = @[@0,@1,@2,@3,@4,@5];
+    NSArray *arr2 = @[@0,@1,@2,@3,@4,@5];
+
+    BOOL alwaysYes = [[arr1 objectEnumerator] sequenceEqual:[arr2 objectEnumerator]
+                                             withComparator:^BOOL(id obj1, id obj2) { return YES;}];
+
+    BOOL alwaysNo = [[arr1 objectEnumerator] sequenceEqual:[arr2 objectEnumerator]
+                                            withComparator:^BOOL(id obj1, id obj2) { return NO; }];
+
+    STAssertTrue(alwaysYes, @"Comparator is always YES");
+    STAssertFalse(alwaysNo, @"Comparator is always NO");
+}
+
 @end
