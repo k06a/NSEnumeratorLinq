@@ -365,6 +365,14 @@
     }];
 }
 
+- (NSEnumerator *)ofType:(Class) type
+{
+    return [self where:^BOOL(id item) {
+        return [item isKindOfClass:type];
+    }];
+}
+
+
 #pragma mark - Aggregators
 
 - (id)aggregate:(id (^)(id accumulator,id item))func

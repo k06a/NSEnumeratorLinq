@@ -48,6 +48,7 @@
 - (NSEnumerator *)select_parallel:(id (^)(id))func priority:(long)priority;
 - (NSEnumerator *)distinct;
 - (NSEnumerator *)distinct:(id<NSCopying> (^)(id))keySelector;
+- (NSEnumerator *)ofType:(Class) type;
 
 - (NSEnumerator *)skip:(NSInteger)count;
 - (NSEnumerator *)skipWhile:(BOOL (^)(id))predicate;
