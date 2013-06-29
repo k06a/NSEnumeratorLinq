@@ -468,6 +468,26 @@
     }];
 }
 
+- (BOOL) sequenceEqual:(NSEnumerator *)other
+{
+    return [self sequenceEqual:other withComparator:^BOOL(id obj1, id obj2) {
+        return [obj1 isEqual:obj2];
+    }];
+}
+
+- (BOOL)sequenceEqual:(NSEnumerator *) other
+       withComparator:(BOOL(^)(id obj1, id obj2))equalityComparator
+{
+    id object;
+    while (object = [self nextObject])
+    {
+        id otherObject = [other nextObject];
+        if (!equalityComparator (object, otherObject))
+            return NO;
+    }
+    return ![other nextObject];
+}
+
 #pragma mark - Single Object Returners
 
 - (id)elementAt:(NSInteger)index
