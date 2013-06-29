@@ -33,6 +33,7 @@ http://msdn.microsoft.com/en-us/library/system.linq.enumerable_methods.aspx
                          priority:(long)priority;
 - (NSEnumerator *)distinct;
 - (NSEnumerator *)distinct:(id<NSCopying> (^)(id))func;
+- (NSEnumerator *)ofType:(Class) type;
 
 - (NSEnumerator *)skip:(NSInteger)count;
 - (NSEnumerator *)skipWhile:(BOOL (^)(id))predicate;
