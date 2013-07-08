@@ -435,4 +435,36 @@
     STAssertFalse(alwaysNo, @"Comparator is always NO");
 }
 
+-(void)testSum
+{
+    NSArray *intArray = @[@1, @2, @3, @4];
+    NSArray *doubleArray = @[@1.5, @2.5, @3.5, @4.5];
+    NSArray *singleElementArray = @[@1.0];
+    NSArray *stringsNumArray = @[@"1", @"2", @"3"];
+    NSArray *arraysArray = @[@[], @[]];
+
+    STAssertTrue(10 == [[intArray objectEnumerator] sum], @"Sum of int values");
+    STAssertTrue(12 == [[doubleArray objectEnumerator] sum], @"Sum of double values");
+    STAssertTrue(1.0 == [[singleElementArray objectEnumerator] sum], @"Sum of single element array");
+    STAssertTrue(6.0 == [[stringsNumArray objectEnumerator] sum], @"Sum of an array of numbers as strings");
+
+    STAssertThrows([[arraysArray objectEnumerator] sum], @"Attempting to sum array of objects without doubleValue method should throw");
+}
+
+-(void)testAverage
+{
+    NSArray *intArray = @[@1, @2, @3, @4];
+    NSArray *doubleArray = @[@1.5, @2.5, @3.5, @4.5];
+    NSArray *singleElementArray = @[@1.0];
+    NSArray *stringsNumArray = @[@"1", @"2", @"3"];
+    NSArray *arraysArray = @[@[], @[]];
+
+    STAssertTrue(2.5 == [[intArray objectEnumerator] average], @"Average of int values");
+    STAssertTrue(3 == [[doubleArray objectEnumerator] average], @"Average of double values");
+    STAssertTrue(1.0 == [[singleElementArray objectEnumerator] average], @"Average of single element array");
+    STAssertTrue(2.0 == [[stringsNumArray objectEnumerator] average], @"Average of an array of numbers as strings");
+
+    STAssertThrows([[arraysArray objectEnumerator] average], @"Attempting to average array of objects without doubleValue method should throw");
+}
+
 @end
