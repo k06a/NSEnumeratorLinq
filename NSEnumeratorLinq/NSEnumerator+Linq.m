@@ -464,6 +464,28 @@
     }];
 }
 
+- (double)sum
+{
+    double t = 0;
+    for (NSNumber *n in self) {
+        double d = [n doubleValue];
+        t += d;
+    }
+    return t;
+}
+
+- (double)average
+{
+    int t = 1;
+    double avg = 0;
+    for (NSNumber *n in self) {
+        double d = [n doubleValue];
+        avg += (d - avg) / t;
+        ++t;
+    }
+    return avg;
+}
+
 - (BOOL) sequenceEqual:(NSEnumerator *)other
 {
     return [self sequenceEqual:other withComparator:^BOOL(id obj1, id obj2) {
