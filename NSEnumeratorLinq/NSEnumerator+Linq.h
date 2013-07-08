@@ -81,6 +81,8 @@
 - (id)max:(id (^)(id))func;
 - (id)min;
 - (id)min:(id (^)(id))func;
+- (double) sum;
+- (double) average;
 
 - (BOOL)sequenceEqual:(NSEnumerator *)other;
 - (BOOL)sequenceEqual:(NSEnumerator *) other
