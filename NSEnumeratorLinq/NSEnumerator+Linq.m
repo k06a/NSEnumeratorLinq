@@ -347,7 +347,14 @@
                          comparator:(NSComparisonResult(^)(id obj1, id obj2))objectComparator
 {
     return [[[self allObjects] sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
-        return objectComparator(func(obj2), func(obj1));
+        switch (objectComparator(func(obj2), func(obj1))) {
+            case NSOrderedAscending:
+                return NSOrderedDescending;
+            case NSOrderedDescending:
+                return NSOrderedAscending;
+            default:
+                return NSOrderedSame;
+        }
     }] objectEnumerator];
 }
 
@@ -361,7 +368,7 @@
 - (NSEnumerator *)orderByDescending:(id (^)(id))func
 {
     return [self orderByDescending:func comparator:^NSComparisonResult(id obj1, id obj2){
-        return [func(obj2) compare:func(obj1)];
+        return [obj2 compare:obj1];
     }];
 }
 
