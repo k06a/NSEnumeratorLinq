@@ -42,14 +42,14 @@
 {
     return [NSString stringWithFormat:@"(key: %@ value: %@)",
             [self.key debugDescription],
-            [self.value debugDescription],nil];
+            [self.value debugDescription]];
 }
 
 - (NSString *)description
 {
     return [NSString stringWithFormat:@"(key: %@ value: %@)",
             [self.key description],
-            [self.value description],nil];
+            [self.value description]];
 }
 
 @end

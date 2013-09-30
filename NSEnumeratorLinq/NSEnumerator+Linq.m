@@ -56,7 +56,7 @@
     {
         if (separator && str.length > 0)
             [str appendString:separator];
-        [str appendFormat:@"%c",[num unsignedCharValue],nil];
+        [str appendFormat:@"%c",[num unsignedCharValue]];
     }
     return str;
 }
