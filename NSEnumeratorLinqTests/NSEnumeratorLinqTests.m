@@ -217,6 +217,24 @@
     STAssertEqualObjects(ans5, [[[arr5 objectEnumerator] select_i:transform] allObjects], @"Array of size 5");
 }
 
+- (void)testSelectMany
+{
+    NSArray * arr03 = @[@[],@[@4,@5,@6]];
+    NSArray * arr13 = @[@[@1],@[@4,@5,@6]];
+    NSArray * arr23 = @[@[@1,@2],@[@4,@5,@6]];
+    NSArray * arr33 = @[@[@1,@2,@3],@[@4,@5,@6]];
+    
+    NSArray * ans03 = @[@4,@5,@6];
+    NSArray * ans13 = @[@1,@4,@5,@6];
+    NSArray * ans23 = @[@1,@2,@4,@5,@6];
+    NSArray * ans33 = @[@1,@2,@3,@4,@5,@6];
+    
+    STAssertEqualObjects(ans03, [[arr03.objectEnumerator selectMany:FUNC(id, NSArray * a, a.objectEnumerator)] allObjects], @"Array of 2 two arrays: 0 and 3");
+    STAssertEqualObjects(ans13, [[arr13.objectEnumerator selectMany:FUNC(id, NSArray * a, a.objectEnumerator)] allObjects], @"Array of 2 two arrays: 1 and 3");
+    STAssertEqualObjects(ans23, [[arr23.objectEnumerator selectMany:FUNC(id, NSArray * a, a.objectEnumerator)] allObjects], @"Array of 2 two arrays: 2 and 3");
+    STAssertEqualObjects(ans33, [[arr33.objectEnumerator selectMany:FUNC(id, NSArray * a, a.objectEnumerator)] allObjects], @"Array of 2 two arrays: 3 and 3");
+}
+
 - (void)testSkip
 {
     NSArray * arr0 = @[];

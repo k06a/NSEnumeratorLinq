@@ -325,13 +325,18 @@
 {
     __block NSEnumerator * item = nil;
     return [[NSEnumeratorWrapper alloc] initWithEnumarator:self nextObject:^id(NSEnumerator * enumerator) {
-        id object = [item nextObject];
-        if (!object)
+        while (YES)
         {
-            item = [enumerator nextObject];
-            object = [item nextObject];
+            if (!item)
+                item = func([enumerator nextObject]);
+            if (!item)
+                return nil;
+            
+            id object = [item nextObject];
+            if (object)
+                return object;
+            item = nil;
         }
-        return object;
     }];
 }
 
