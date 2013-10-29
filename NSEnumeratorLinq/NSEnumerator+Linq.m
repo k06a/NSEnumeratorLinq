@@ -112,14 +112,10 @@
 
 @implementation NSEnumerator (Linq)
 
-- (NSEnumerator *)where:(BOOL (^)(id object))predicate
+- (NSEnumerator *)where:(BOOL (^)(id))predicate
 {
-    return [[NSEnumeratorWrapper alloc] initWithEnumarator:self nextObject:^id(NSEnumerator * enumerator) {
-        id result;
-        while (result = [enumerator nextObject])
-            if (predicate(result))
-                return result;
-        return nil;
+    return [self where_i:^BOOL(id object, int index) {
+        return predicate(object);
     }];
 }
 
@@ -130,18 +126,15 @@
         id result;
         while (result = [enumerator nextObject])
             if (predicate(result,index++))
-                return result;
-        return nil;
+                break;
+        return result;
     }];
 }
 
 - (NSEnumerator *)select:(id (^)(id))func
 {
-    return [[NSEnumeratorWrapper alloc] initWithEnumarator:self nextObject:^id(NSEnumerator * enumerator) {
-        id result = [enumerator nextObject];
-        if (result)
-            return func(result);
-        return nil;
+    return [self select_i:^id(id object, int index) {
+        return func(object);
     }];
 }
 
@@ -341,7 +334,7 @@
 }
 
 - (NSEnumerator *)orderBy:(id (^)(id))func
-               comparator:(NSComparisonResult(^)(id obj1, id obj2))objectComparator
+               comparator:(NSComparisonResult (^)(id obj1, id obj2))objectComparator
 {
     return [[[self allObjects] sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
         return objectComparator(func(obj1), func(obj2));
@@ -349,7 +342,7 @@
 }
 
 - (NSEnumerator *)orderByDescending:(id (^)(id))func
-                         comparator:(NSComparisonResult(^)(id obj1, id obj2))objectComparator
+                         comparator:(NSComparisonResult (^)(id obj1, id obj2))objectComparator
 {
     return [[[self allObjects] sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
         switch (objectComparator(func(obj2), func(obj1))) {
@@ -377,17 +370,25 @@
     }];
 }
 
-- (NSEnumerator *)ofType:(Class) type
+- (NSEnumerator *)ofType:(Class)type
 {
-    return [self where:^BOOL(id item) {
-        return [item isKindOfClass:type];
+    return [self where:^BOOL(id object) {
+        return [object isKindOfClass:type];
     }];
 }
 
 
 #pragma mark - Aggregators
 
-- (id)aggregate:(id (^)(id accumulator,id item))func
+- (id)aggregate:(id (^)(id,id))func initValue:(id)value
+{
+    id result = value;
+    for (id object in self)
+        result = func(result, object);
+    return result;
+}
+
+- (id)elect:(id (^)(id,id))func
 {
     id result = nil;
     for (id object in self)
@@ -450,28 +451,28 @@
 
 - (id)max
 {
-    return [self aggregate:^id(id a, id b) {
-        return ([a compare:b] >= 0) ? a : b;
+    return [self max:^id(id object) {
+        return object;
     }];
 }
 
 - (id)max:(id (^)(id))func
 {
-    return [self aggregate:^id(id a, id b) {
+    return [self elect:^id(id a, id b) {
         return ([func(a) compare:func(b)] >= 0) ? a : b;
     }];
 }
 
 - (id)min
 {
-    return [self aggregate:^id(id a, id b) {
-        return ([a compare:b] <= 0) ? a : b;
+    return [self min:^id(id object) {
+        return object;
     }];
 }
 
 - (id)min:(id (^)(id))func
 {
-    return [self aggregate:^id(id a, id b) {
+    return [self elect:^id(id a, id b) {
         return ([func(a) compare:func(b)] <= 0) ? a : b;
     }];
 }
@@ -479,8 +480,8 @@
 - (double)sum
 {
     double t = 0;
-    for (NSNumber *n in self) {
-        double d = [n doubleValue];
+    for (NSNumber * object in self) {
+        double d = [object doubleValue];
         t += d;
     }
     return t;
@@ -490,15 +491,15 @@
 {
     int t = 1;
     double avg = 0;
-    for (NSNumber *n in self) {
-        double d = [n doubleValue];
+    for (NSNumber * object in self) {
+        double d = [object doubleValue];
         avg += (d - avg) / t;
-        ++t;
+        t++;
     }
     return avg;
 }
 
-- (BOOL) sequenceEqual:(NSEnumerator *)other
+- (BOOL)sequenceEqual:(NSEnumerator *)other
 {
     return [self sequenceEqual:other withComparator:^BOOL(id obj1, id obj2) {
         return [obj1 isEqual:obj2];
@@ -506,7 +507,7 @@
 }
 
 - (BOOL)sequenceEqual:(NSEnumerator *) other
-       withComparator:(BOOL(^)(id obj1, id obj2))equalityComparator
+       withComparator:(BOOL (^)(id,id))equalityComparator
 {
     id object;
     while (object = [self nextObject])

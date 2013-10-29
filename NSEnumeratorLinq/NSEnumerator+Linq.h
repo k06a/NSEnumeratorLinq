@@ -28,74 +28,78 @@
 // NSString+Linq
 
 @interface NSString (Linq)
+
 + (id)stringByJoin:(NSEnumerator *)unichars
      withSeparator:(NSString *)separator;
 - (NSEnumerator *)enumerateCharacters;
 - (NSEnumerator *)enumerateComponentsSeparatedByString:(NSString *)separator;
 - (NSEnumerator *)enumerateComponentsSeparatedByString:(NSString *)separator
                                                options:(NSStringCompareOptions)options;
+
 @end
 
 // NSEnumerator+Linq
 
 @interface NSEnumerator (Linq)
 
-- (NSEnumerator *)where:(BOOL (^)(id))predicate;
-- (NSEnumerator *)where_i:(BOOL (^)(id,int))predicate;
-- (NSEnumerator *)select:(id (^)(id))func;
-- (NSEnumerator *)select_i:(id (^)(id,int))func;
-- (NSEnumerator *)select_parallel:(id (^)(id))func;
-- (NSEnumerator *)select_parallel:(id (^)(id))func priority:(long)priority;
+- (NSEnumerator *)where:(BOOL (^)(id object))predicate;
+- (NSEnumerator *)where_i:(BOOL (^)(id object,int index))predicate;
+- (NSEnumerator *)select:(id (^)(id object))func;
+- (NSEnumerator *)select_i:(id (^)(id object,int index))func;
+- (NSEnumerator *)select_parallel:(id (^)(id object))func;
+- (NSEnumerator *)select_parallel:(id (^)(id object))func priority:(long)priority;
 - (NSEnumerator *)distinct;
-- (NSEnumerator *)distinct:(id<NSCopying> (^)(id))keySelector;
+- (NSEnumerator *)distinct:(id<NSCopying> (^)(id object))keySelector;
 - (NSEnumerator *)ofType:(Class) type;
 
 - (NSEnumerator *)skip:(NSInteger)count;
-- (NSEnumerator *)skipWhile:(BOOL (^)(id))predicate;
+- (NSEnumerator *)skipWhile:(BOOL (^)(id object))predicate;
 - (NSEnumerator *)take:(NSInteger)count;
-- (NSEnumerator *)takeWhile:(BOOL (^)(id))predicate;
+- (NSEnumerator *)takeWhile:(BOOL (^)(id object))predicate;
 
-- (NSEnumerator *)groupBy:(id<NSCopying> (^)(id))keySelector;
-- (NSEnumerator *)splitBy:(id<NSCopying> (^)(id))keySelector;
-- (NSEnumerator *)selectMany:(NSEnumerator * (^)(id))func;
+- (NSEnumerator *)groupBy:(id<NSCopying> (^)(id object))keySelector;
+- (NSEnumerator *)splitBy:(id<NSCopying> (^)(id object))keySelector;
+- (NSEnumerator *)selectMany:(NSEnumerator * (^)(id object))func;
 
-- (NSEnumerator *)orderBy:(id (^)(id))func
-               comparator:(NSComparisonResult(^)(id obj1, id obj2))objectComparator;
-- (NSEnumerator *)orderByDescending:(id (^)(id))func
-                         comparator:(NSComparisonResult(^)(id obj1, id obj2))objectComparator;
-- (NSEnumerator *)orderBy:(id (^)(id))func;
-- (NSEnumerator *)orderByDescending:(id (^)(id))func;
+- (NSEnumerator *)orderBy:(id (^)(id object))func
+               comparator:(NSComparisonResult (^)(id obj1, id obj2))objectComparator;
+- (NSEnumerator *)orderByDescending:(id (^)(id object))func
+                         comparator:(NSComparisonResult (^)(id obj1, id obj2))objectComparator;
+- (NSEnumerator *)orderBy:(id (^)(id object))func;
+- (NSEnumerator *)orderByDescending:(id (^)(id object))func;
 
 #pragma mark - Aggregators
 
-- (id)aggregate:(id (^)(id accumulator,id item))func;
+- (id)aggregate:(id (^)(id accumulator,id object))func initValue:(id)value;
 - (BOOL)all;
-- (BOOL)all:(BOOL (^)(id))predicate;
+- (BOOL)all:(BOOL (^)(id object))predicate;
 - (BOOL)any;
-- (BOOL)any:(BOOL (^)(id))predicate;
+- (BOOL)any:(BOOL (^)(id object))predicate;
 - (BOOL)contains:(id)object;
 - (BOOL)containsObject:(id)object;
 - (NSInteger)count;
 - (NSInteger)count:(BOOL (^)(id))predicate;
+
+- (id)elect:(id (^)(id obj1,id obj2))func;
 - (id)max;
-- (id)max:(id (^)(id))func;
+- (id)max:(id (^)(id object))func;
 - (id)min;
-- (id)min:(id (^)(id))func;
-- (double) sum;
-- (double) average;
+- (id)min:(id (^)(id object))func;
+- (double)sum;
+- (double)average;
 
 - (BOOL)sequenceEqual:(NSEnumerator *)other;
 - (BOOL)sequenceEqual:(NSEnumerator *) other
-       withComparator:(BOOL(^)(id obj1, id obj2))equalityComparator;
+       withComparator:(BOOL (^)(id obj1, id obj2))equalityComparator;
 
 
 #pragma mark - Single Object Returners
 
 - (id)elementAt:(NSInteger)index;
 - (id)firstOrDefault;
-- (id)firstOrDefault:(BOOL (^)(id))predicate;
+- (id)firstOrDefault:(BOOL (^)(id object))predicate;
 - (id)lastOrDefault;
-- (id)lastOrDefault:(BOOL (^)(id))predicate;
+- (id)lastOrDefault:(BOOL (^)(id object))predicate;
 
 #pragma mark - Set Methods
 
@@ -106,28 +110,28 @@
 - (NSEnumerator *)except:(NSEnumerator *)secondEnumerator;
 
 - (NSEnumerator *)zip:(NSEnumerator *)secondEnumerator
-                 with:(id (^)(id,id))func;
+                 with:(id (^)(id obj1,id obj2))func;
 
 - (NSEnumerator *)join:(NSEnumerator *)secondEnumerator
-         firstSelector:(id<NSCopying> (^)(id))firstSelector
-        secondSelector:(id<NSCopying> (^)(id))secondSelector;
+         firstSelector:(id<NSCopying> (^)(id object))firstSelector
+        secondSelector:(id<NSCopying> (^)(id object))secondSelector;
 
 - (NSEnumerator *)join:(NSEnumerator *)secondEnumerator
-         firstSelector:(id<NSCopying> (^)(id))firstSelector
-        secondSelector:(id<NSCopying> (^)(id))secondSelector
+         firstSelector:(id<NSCopying> (^)(id object))firstSelector
+        secondSelector:(id<NSCopying> (^)(id object))secondSelector
         resultSelector:(id (^)(id,id))resultSelector;
 
 - (NSEnumerator *)groupJoin:(NSEnumerator *)secondEnumerator
-              firstSelector:(id<NSCopying> (^)(id))firstSelector
-             secondSelector:(id<NSCopying> (^)(id))secondSelector;
+              firstSelector:(id<NSCopying> (^)(id object))firstSelector
+             secondSelector:(id<NSCopying> (^)(id object))secondSelector;
 
 #pragma mark - Export methods
 
 - (NSArray *)toArray;
 - (NSSet *)toSet;
 - (NSMutableDictionary *)toDictionary;
-- (NSMutableDictionary *)toDictionary:(id<NSCopying> (^)(id))keySelector;
-- (NSMutableDictionary *)toLookup:(id<NSCopying> (^)(id))keySelector;
+- (NSMutableDictionary *)toDictionary:(id<NSCopying> (^)(id object))keySelector;
+- (NSMutableDictionary *)toLookup:(id<NSCopying> (^)(id object))keySelector;
 
 #pragma - Generation Methods
 
