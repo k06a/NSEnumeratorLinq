@@ -75,6 +75,8 @@
 - (BOOL)all:(BOOL (^)(id object))predicate;
 - (BOOL)any;
 - (BOOL)any:(BOOL (^)(id object))predicate;
+- (BOOL)none;
+- (BOOL)none:(BOOL (^)(id object))predicate;
 - (BOOL)contains:(id)object;
 - (BOOL)containsObject:(id)object;
 - (NSInteger)count;

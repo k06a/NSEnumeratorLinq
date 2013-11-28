@@ -426,6 +426,16 @@
     return NO;
 }
 
+- (BOOL)none
+{
+    return ![self any];
+}
+
+- (BOOL)none:(BOOL (^)(id object))predicate
+{
+    return ![self any:predicate];
+}
+
 - (BOOL)contains:(id)object
 {
     return [self any:PREDICATE(id a, [a isEqual:object])];
