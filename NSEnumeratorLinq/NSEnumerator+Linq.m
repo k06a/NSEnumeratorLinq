@@ -256,14 +256,11 @@
     id object;
     while (object = [self nextObject])
     {
-        id key = keySelector(object);
-        NSMutableArray * value = [dict objectForKey:key];
-        if (!value)
-        {
-            value = [NSMutableArray array];
-            [dict setObject:value forKey:key];
-        }
-        [value addObject:object];
+        id<NSCopying> key = keySelector(object);
+        NSMutableArray * values = [dict objectForKey:key] ?: [NSMutableArray array];
+        [values addObject:object];
+        if (values.count == 1)
+            [dict setObject:values forKey:key];
     };
 
     return [dict keyValueEnumerator];
@@ -683,7 +680,7 @@
 
 - (NSMutableDictionary *)toLookup:(id<NSCopying> (^)(id))keySelector
 {
-    return [[self groupBy:keySelector] toLookup];
+    return [[self groupBy:keySelector] toDictionary];
 }
 
 #pragma - Generation Methods
