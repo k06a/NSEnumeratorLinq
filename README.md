@@ -117,6 +117,7 @@ http://msdn.microsoft.com/en-us/library/system.linq.enumerable_methods.aspx
 - (NSSet *)toSet;
 - (NSDictionary *)toDictionary;
 - (NSDictionary *)toDictionary:(id<NSCopying> (^)(id object))keySelector;
+- (NSDictionary *)toLookup;
 - (NSDictionary *)toLookup:(id<NSCopying> (^)(id object))keySelector;
 ```
 

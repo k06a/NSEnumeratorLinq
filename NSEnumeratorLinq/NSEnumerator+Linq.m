@@ -669,9 +669,21 @@
     return [[self select:TRANSFORM(id a, [NSKeyValuePair pairWithKey:keySelector(a) value:a])] toDictionary];
 }
 
+- (NSMutableDictionary *)toLookup
+{
+    NSMutableDictionary * dict = [NSMutableDictionary dictionary];
+    for (NSKeyValuePair * pair in self) {
+        NSMutableArray * values = [dict objectForKey:pair.key] ?: [NSMutableArray array];
+        [values addObject:pair.value];
+        if (values.count == 1)
+            [dict setValue:values forKey:pair.key];
+    }
+    return dict;
+}
+
 - (NSMutableDictionary *)toLookup:(id<NSCopying> (^)(id))keySelector
 {
-    return [[self groupBy:keySelector] toDictionary];
+    return [[self groupBy:keySelector] toLookup];
 }
 
 #pragma - Generation Methods
