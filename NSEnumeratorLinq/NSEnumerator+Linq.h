@@ -43,9 +43,9 @@
 @interface NSEnumerator (Linq)
 
 - (NSEnumerator *)where:(BOOL (^)(id object))predicate;
-- (NSEnumerator *)where_i:(BOOL (^)(id object,int index))predicate;
+- (NSEnumerator *)where_i:(BOOL (^)(id object,NSInteger index))predicate;
 - (NSEnumerator *)select:(id (^)(id object))func;
-- (NSEnumerator *)select_i:(id (^)(id object,int index))func;
+- (NSEnumerator *)select_i:(id (^)(id object,NSInteger index))func;
 - (NSEnumerator *)select_parallel:(id (^)(id object))func;
 - (NSEnumerator *)select_parallel:(id (^)(id object))func priority:(long)priority;
 - (NSEnumerator *)distinct;
@@ -137,8 +137,8 @@
 
 #pragma - Generation Methods
 
-+ (NSEnumerator *)range:(int)start count:(int)count;
-+ (NSEnumerator *)repeat:(id)item count:(int)count;
++ (NSEnumerator *)range:(NSInteger)start count:(NSInteger)count;
++ (NSEnumerator *)repeat:(id)item count:(NSInteger)count;
 + (NSEnumerator *)empty;
 
 #pragma mark - IO Methods

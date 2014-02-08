@@ -114,12 +114,12 @@
 
 - (NSEnumerator *)where:(BOOL (^)(id))predicate
 {
-    return [self where_i:^BOOL(id object, int index) {
+    return [self where_i:^BOOL(id object, NSInteger index) {
         return predicate(object);
     }];
 }
 
-- (NSEnumerator *)where_i:(BOOL (^)(id,int))predicate
+- (NSEnumerator *)where_i:(BOOL (^)(id,NSInteger))predicate
 {
     __block NSInteger index = 0;
     return [[NSEnumeratorWrapper alloc] initWithEnumarator:self nextObject:^id(NSEnumerator * enumerator) {
@@ -133,12 +133,12 @@
 
 - (NSEnumerator *)select:(id (^)(id))func
 {
-    return [self select_i:^id(id object, int index) {
+    return [self select_i:^id(id object, NSInteger index) {
         return func(object);
     }];
 }
 
-- (NSEnumerator *)select_i:(id (^)(id,int))func
+- (NSEnumerator *)select_i:(id (^)(id,NSInteger))func
 {
     __block NSInteger index = 0;
     return [[NSEnumeratorWrapper alloc] initWithEnumarator:self nextObject:^id(NSEnumerator * enumerator) {
@@ -685,9 +685,9 @@
 
 #pragma - Generation Methods
 
-+ (NSEnumerator *)range:(int)start count:(int)count
++ (NSEnumerator *)range:(NSInteger)start count:(NSInteger)count
 {
-    __block int index = start;
+    __block NSInteger index = start;
     return [[NSEnumeratorWrapper alloc] initWithEnumarator:nil nextObject:^id(NSEnumerator * enumerator) {
         if (index < start + count)
             return @(index++);
@@ -695,9 +695,9 @@
     }];
 }
 
-+ (NSEnumerator *)repeat:(id)object count:(int)count
++ (NSEnumerator *)repeat:(id)object count:(NSInteger)count
 {
-    __block int index = 0;
+    __block NSInteger index = 0;
     return [[NSEnumeratorWrapper alloc] initWithEnumarator:nil nextObject:^id(NSEnumerator * enumerator) {
         if (index++ < count)
             return object;
@@ -720,9 +720,9 @@
     [stream open];
     if (![stream hasBytesAvailable])
         return nil;
-
-    __block int index = 0;
-    __block int size = 0;
+    
+    __block NSInteger index = 0;
+    __block NSInteger size = 0;
     __block uint8_t * buffer = (uint8_t *)malloc(1024);
     return [[NSEnumeratorWrapper alloc] initWithEnumarator:nil nextObject:^id(NSEnumerator * en) {
         if (stream == nil)
