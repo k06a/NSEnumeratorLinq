@@ -49,6 +49,17 @@
 @implementation NSString (Linq)
 
 + (id)stringByJoin:(NSEnumerator *)unichars
+          encoding:(NSStringEncoding)encoding
+{
+    NSMutableData *data = [NSMutableData data];
+    for (NSNumber *ch in unichars) {
+        uint8_t c = ch.unsignedCharValue;
+        [data appendBytes:&c length:1];
+    }
+    return [[NSString alloc] initWithData:data encoding:encoding];
+}
+
++ (id)stringByJoin:(NSEnumerator *)unichars
      withSeparator:(NSString *)separator
 {
     NSMutableString * str = [NSMutableString string];

@@ -30,6 +30,8 @@
 @interface NSString (Linq)
 
 + (id)stringByJoin:(NSEnumerator *)unichars
+          encoding:(NSStringEncoding)encoding;
++ (id)stringByJoin:(NSEnumerator *)unichars
      withSeparator:(NSString *)separator;
 - (NSEnumerator *)enumerateCharacters;
 - (NSEnumerator *)enumerateComponentsSeparatedByString:(NSString *)separator;
