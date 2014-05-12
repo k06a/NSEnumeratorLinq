@@ -147,5 +147,7 @@
 
 + (NSEnumerator *)readBytes:(NSString *)path;
 + (NSEnumerator *)readLines:(NSString *)path;
++ (NSEnumerator *)readLines:(NSString *)path
+                   encoding:(NSStringEncoding)encoding;
 
 @end

@@ -755,6 +755,12 @@
 
 + (NSEnumerator *)readLines:(NSString *)path
 {
+    return [NSEnumerator readLines:path encoding:NSUTF8StringEncoding];
+}
+
++ (NSEnumerator *)readLines:(NSString *)path
+                   encoding:(NSStringEncoding)encoding
+{
     __block uint8_t prevCh = 0;
     __block int lineIndex = 0;
     
@@ -780,7 +786,7 @@
         en = [[@[[NSKeyValuePair pairWithKey:@0 value:@[]],firstValue] objectEnumerator] concat:en];
     
     return [en select:^id(NSKeyValuePair * pair) {
-        NSString * str = [NSString stringByJoin:pair.value withSeparator:nil];
+        NSString * str = [NSString stringByJoin:pair.value encoding:encoding];
         if (str.length == 0)
             return @"";
         unichar ch = [str characterAtIndex:0];
