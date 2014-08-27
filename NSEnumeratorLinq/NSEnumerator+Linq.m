@@ -123,6 +123,12 @@
 
 @implementation NSEnumerator (Linq)
 
++ (NSEnumerator*)enumeratorWithBlock:(id (^)())func {
+    return [[NSEnumeratorWrapper alloc] initWithEnumarator:nil nextObject:^id(NSEnumerator * enumerator) {
+        return func();
+    }];
+}
+
 - (NSEnumerator *)where:(BOOL (^)(id))predicate
 {
     return [self where_i:^BOOL(id object, NSInteger index) {
@@ -457,8 +463,10 @@
 - (NSInteger)count
 {
     NSInteger count = 0;
-    for (id object in self)
+    for (id object in self) {
+        (void)object;
         count++;
+    }
     return count;
 }
 

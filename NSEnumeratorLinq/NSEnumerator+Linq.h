@@ -44,6 +44,8 @@
 
 @interface NSEnumerator (Linq)
 
++ (NSEnumerator *)enumeratorWithBlock:(id (^)())func;
+
 - (NSEnumerator *)where:(BOOL (^)(id object))predicate;
 - (NSEnumerator *)where_i:(BOOL (^)(id object,NSInteger index))predicate;
 - (NSEnumerator *)select:(id (^)(id object))func;

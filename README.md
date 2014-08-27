@@ -24,6 +24,7 @@ http://msdn.microsoft.com/en-us/library/system.linq.enumerable_methods.aspx
 
 ###Main Methods
 ```
++ (NSEnumerator *)enumeratorWithBlock:(id (^)())func;
 - (NSEnumerator *)where:(BOOL (^)(id object))predicate;
 - (NSEnumerator *)where_i:(BOOL (^)(id object,int index))predicate;
 - (NSEnumerator *)select:(id (^)(id object))predicate;
