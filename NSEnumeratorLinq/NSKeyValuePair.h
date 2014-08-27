@@ -10,8 +10,8 @@
 
 @interface NSKeyValuePair : NSObject
 
-@property (nonatomic) id key;
-@property (nonatomic) id value;
+@property (nonatomic,retain) id key;
+@property (nonatomic,retain) id value;
 
 - (id)kvKey;
 - (id)kvValue;
