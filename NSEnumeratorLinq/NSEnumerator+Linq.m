@@ -457,8 +457,10 @@
 - (NSInteger)count
 {
     NSInteger count = 0;
-    for (id object in self)
+    for (id object in self) {
+        (void)object;
         count++;
+    }
     return count;
 }
 
